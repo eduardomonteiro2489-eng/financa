@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FinancePro</title>
+
+<style>
+:root{
+--bg:#f4f6f9;
+--card:#fff;
+--text:#222;
+--primary:#2563eb;
+--success:#16a34a;
+--danger:#dc2626;
+--border:#ddd;
+}
+
+.dark{
+--bg:#111827;
+--card:#1f2937;
+--text:#fff;
+--border:#374151;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+padding:20px;
+transition:.3s;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:var(--card);
+padding:20px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.card h3{
+font-size:14px;
+opacity:.8;
+}
+
+.valor{
+font-size:28px;
+font-weight:bold;
+margin-top:8px;
+}
+
+.receita{color:var(--success);}
+.despesa{color:var(--danger);}
+.saldo{color:var(--primary);}
+
+.form{
+background:var(--card);
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:10px;
+}
+
+input,select{
+padding:10px;
+border:1px solid var(--border);
+border-radius:8px;
+background:var(--card);
+color:var(--text);
+}
+
+button{
+padding:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:var(--primary);
+color:white;
+}
+
+button:hover{
+opacity:.9;
+}
+
+.meta-box{
+margin-top:15px;
+}
+
+.barra{
+height:20px;
+background:#ddd;
+border-radius:20px;
+overflow:hidden;
+}
+
+.progresso{
+height:100%;
+width:0%;
+background:var(--success);
+transition:.5s;
+}
+
+.table-box{
+background:var(--card);
+padding:20px;
+border-radius:15px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid var(--border);
+}
+
+.delete{
+background:var(--danger);
+}
+
+.ranking{
+margin-top:20px;
+background:var(--card);
+padding:20px;
+border-radius:15px;
+}
+
+.tag{
+padding:4px 10px;
+border-radius:20px;
+color:#fff;
+font-size:12px;
+}
+
+.tag.receita{
+background:var(--success);
+}
+
+.tag.despesa{
+background:var(--danger);
+}
+
+@media(max-width:768px){
+table{
+display:block;
+overflow-x:auto;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="top">
+<h1>💰 FinancePro</h1>
+<button onclick="tema()">🌙 Tema</button>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>Saldo</h3>
+<div id="saldo" class="valor saldo">R$0,00</div>
+</div>
+
+<div class="card">
+<h3>Receitas</h3>
+<div id="receitas" class="valor receita">R$0,00</div>
+</div>
+
+<div class="card">
+<h3>Despesas</h3>
+<div id="despesas" class="valor despesa">R$0,00</div>
+</div>
+
+</div>
+
+<div class="form">
+
+<div class="grid">
+
+<input type="date" id="data">
+
+<input type="text" id="descricao" placeholder="Descrição">
+
+<input type="number" id="valor" placeholder="Valor">
+
+<select id="tipo">
+<option value="receita">Receita</option>
+<option value="despesa">Despesa</option>
+</select>
+
+<input type="text" id="categoria" placeholder="Categoria">
+
+<button onclick="adicionar()">Adicionar</button>
+
+</div>
+
+<div class="meta-box">
+
+<br>
+
+<input type="number"
+id="meta"
+placeholder="Meta Financeira">
+
+<div style="margin-top:10px" class="barra">
+<div class="progresso" id="progresso"></div>
+</div>
+
+<p id="metaTexto" style="margin-top:5px">
+Meta: R$0,00
+</p>
+
+</div>
+
+</div>
+
+<div class="table-box">
+
+<div style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap">
+
+<input
+type="text"
+id="busca"
+placeholder="Pesquisar..."
+onkeyup="render()">
+
+<button onclick="exportar()">
+Exportar
+</button>
+
+<label>
+<button type="button">
+Importar
+</button>
+<input
+type="file"
+id="importar"
+hidden>
+</label>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Data</th>
+<th>Descrição</th>
+<th>Categoria</th>
+<th>Tipo</th>
+<th>Valor</th>
+<th>Ação</th>
+</tr>
+</thead>
+
+<tbody id="lista"></tbody>
+
+</table>
+
+</div>
+
+<div class="ranking">
+<h3>🏆 Ranking de Gastos</h3>
+<br>
+<div id="ranking"></div>
+</div>
+
+</div>
+
+<script>
+
+const KEY="finance-pro";
+
+let dados=
+JSON.parse(localStorage.getItem(KEY))||[];
+
+const metaInput=
+document.getElementById("meta");
+
+metaInput.value=
+localStorage.getItem("meta")||0;
+
+document.getElementById("data").value=
+new Date().toISOString().split("T")[0];
+
+function salvar(){
+localStorage.setItem(KEY,
+JSON.stringify(dados));
+
+localStorage.setItem(
+"meta",
+metaInput.value
+);
+}
+
+function moeda(v){
+return v.toLocaleString(
+"pt-BR",
+{
+style:"currency",
+currency:"BRL"
+}
+);
+}
+
+function adicionar(){
+
+const data=
+document.getElementById("data").value;
+
+const descricao=
+document.getElementById("descricao").value;
+
+const valor=
+parseFloat(
+document.getElementById("valor").value
+);
+
+const tipo=
+document.getElementById("tipo").value;
+
+const categoria=
+document.getElementById("categoria").value;
+
+if(!descricao||!valor){
+alert("Preencha os campos");
+return;
+}
+
+dados.push({
+id:Date.now(),
+data,
+descricao,
+valor,
+tipo,
+categoria
+});
+
+salvar();
+render();
+
+document.getElementById(
+"descricao"
+).value="";
+
+document.getElementById(
+"valor"
+).value="";
+
+document.getElementById(
+"categoria"
+).value="";
+}
+
+function excluir(id){
+
+if(!confirm("Excluir?"))
+return;
+
+dados=
+dados.filter(
+x=>x.id!==id
+);
+
+salvar();
+render();
+}
+
+function render(){
+
+let receitas=0;
+let despesas=0;
+
+dados.forEach(x=>{
+
+if(x.tipo==="receita")
+receitas+=x.valor;
+
+else
+despesas+=x.valor;
+
+});
+
+const saldo=
+receitas-despesas;
+
+document.getElementById(
+"saldo"
+).innerHTML=
+moeda(saldo);
+
+document.getElementById(
+"receitas"
+).innerHTML=
+moeda(receitas);
+
+document.getElementById(
+"despesas"
+).innerHTML=
+moeda(despesas);
+
+const busca=
+document.getElementById(
+"busca"
+).value.toLowerCase();
+
+const tbody=
+document.getElementById(
+"lista"
+);
+
+tbody.innerHTML="";
+
+dados
+.filter(x=>
+x.descricao
+.toLowerCase()
+.includes(busca)
+)
+.sort((a,b)=>b.id-a.id)
+.forEach(x=>{
+
+tbody.innerHTML+=`
+<tr>
+
+<td>${x.data}</td>
+
+<td>${x.descricao}</td>
+
+<td>${x.categoria}</td>
+
+<td>
+<span class="tag ${x.tipo}">
+${x.tipo}
+</span>
+</td>
+
+<td>${moeda(x.valor)}</td>
+
+<td>
+<button
+class="delete"
+onclick="excluir(${x.id})">
+X
+</button>
+</td>
+
+</tr>
+`;
+});
+
+const meta=
+Number(metaInput.value);
+
+const pct=
+meta>0
+?Math.min(
+(saldo/meta)*100,
+100
+)
+:0;
+
+document.getElementById(
+"progresso"
+).style.width=
+pct+"%";
+
+document.getElementById(
+"metaTexto"
+).innerHTML=
+`Meta: ${moeda(meta)}
+(${pct.toFixed(0)}%)`;
+
+ranking();
+}
+
+function ranking(){
+
+let obj={};
+
+dados.forEach(x=>{
+
+if(x.tipo==="despesa"){
+
+obj[x.categoria]=
+(obj[x.categoria]||0)
++x.valor;
+
+}
+
+});
+
+let html="";
+
+Object.entries(obj)
+.sort((a,b)=>b[1]-a[1])
+.slice(0,5)
+.forEach((x,i)=>{
+
+html+=`
+<p>
+${i+1}º ${x[0]}
+- ${moeda(x[1])}
+</p>
+`;
+});
+
+document.getElementById(
+"ranking"
+).innerHTML=
+html||"Sem dados";
+}
+
+function tema(){
+
+document.body
+.classList.toggle("dark");
+
+localStorage.setItem(
+"tema",
+document.body
+.classList.contains("dark")
+);
+}
+
+if(
+localStorage.getItem("tema")
+==="true"
+){
+document.body
+.classList.add("dark");
+}
+
+function exportar(){
+
+const blob=
+new Blob(
+[
+JSON.stringify(
+dados,
+null,
+2
+)
+],
+{
+type:
+"application/json"
+}
+);
+
+const a=
+document.createElement("a");
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+"financeiro.json";
+
+a.click();
+}
+
+document
+.getElementById("importar")
+.addEventListener(
+"change",
+e=>{
+
+const file=
+e.target.files[0];
+
+if(!file)return;
+
+const reader=
+new FileReader();
+
+reader.onload=
+function(){
+
+dados=
+JSON.parse(
+reader.result
+);
+
+salvar();
+render();
+};
+
+reader.readAsText(file);
+
+}
+);
+
+metaInput
+.addEventListener(
+"input",
+()=>{
+salvar();
+render();
+}
+);
+
+render();
+
+</script>
+
+</body>
+</html>
