@@ -25,6 +25,7 @@
   --purple:#a855f7;
   --pink:#ec4899;
   --gold:#eab308;
+  --nvidia:#76b900;
   --shadow-lg:0 20px 40px -12px rgba(0,0,0,0.6);
   --shadow-glow:0 0 20px rgba(59,130,246,0.15);
 }
@@ -87,143 +88,6 @@ body{
 }
 .btn-ico:hover{background:var(--bg-3);border-color:var(--accent);color:var(--accent)}
 .btn-ico svg{width:16px;height:16px;fill:currentColor}
-
-/* ====== CHATBOT ====== */
-.chat-toggle{
-  position:fixed;bottom:24px;right:24px;z-index:150;
-  width:56px;height:56px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--purple));
-  border:none;cursor:pointer;
-  display:grid;place-items:center;
-  box-shadow:0 8px 24px rgba(59,130,246,0.4);
-  transition:all 0.3s;
-}
-.chat-toggle:hover{transform:scale(1.1);box-shadow:0 12px 32px rgba(59,130,246,0.6)}
-.chat-toggle svg{width:28px;height:28px;fill:white}
-.chat-toggle .badge{
-  position:absolute;top:-4px;right:-4px;
-  width:20px;height:20px;border-radius:50%;
-  background:var(--danger);color:white;
-  font-size:10px;font-weight:700;
-  display:grid;place-items:center;
-  border:2px solid var(--bg-0);
-}
-
-.chat-panel{
-  position:fixed;bottom:90px;right:24px;z-index:160;
-  width:400px;height:600px;max-height:calc(100vh - 120px);
-  background:var(--bg-1);border:1px solid var(--border);
-  border-radius:16px;box-shadow:var(--shadow-lg);
-  display:none;flex-direction:column;
-  overflow:hidden;
-}
-.chat-panel.active{display:flex}
-
-.chat-header{
-  padding:16px 20px;
-  background:linear-gradient(135deg,var(--bg-2),var(--bg-1));
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.chat-header-left{display:flex;align-items:center;gap:12px}
-.chat-avatar{
-  width:36px;height:36px;border-radius:10px;
-  background:linear-gradient(135deg,var(--accent),var(--purple));
-  display:grid;place-items:center;
-}
-.chat-avatar svg{width:20px;height:20px;fill:white}
-.chat-title{font-size:14px;font-weight:700}
-.chat-status{font-size:10px;color:var(--success);display:flex;align-items:center;gap:4px}
-.chat-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
-
-.chat-body{
-  flex:1;overflow-y:auto;padding:16px;
-  display:flex;flex-direction:column;gap:12px;
-}
-.chat-msg{
-  display:flex;gap:8px;max-width:85%;
-  animation:slideIn 0.3s ease-out;
-}
-@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.chat-msg.user{align-self:flex-end;flex-direction:row-reverse}
-.chat-msg-avatar{
-  width:28px;height:28px;border-radius:8px;
-  background:var(--bg-3);display:grid;place-items:center;
-  flex-shrink:0;
-}
-.chat-msg-avatar svg{width:14px;height:14px;fill:var(--text-2)}
-.chat-msg.user .chat-msg-avatar{background:var(--accent)}
-.chat-msg.user .chat-msg-avatar svg{fill:white}
-.chat-msg-bubble{
-  padding:10px 14px;border-radius:12px;
-  background:var(--bg-2);border:1px solid var(--border);
-  font-size:12px;line-height:1.5;
-}
-.chat-msg.user .chat-msg-bubble{
-  background:var(--accent);border-color:var(--accent);
-  color:white;
-}
-.chat-msg-bubble code{
-  background:var(--bg-3);padding:2px 6px;border-radius:4px;
-  font-family:'JetBrains Mono',monospace;font-size:11px;
-}
-.chat-msg-bubble pre{
-  background:var(--bg-3);padding:10px;border-radius:6px;
-  margin:8px 0;overflow-x:auto;
-}
-.chat-msg-bubble pre code{background:none;padding:0}
-
-.chat-input-area{
-  padding:16px;border-top:1px solid var(--border);
-  background:var(--bg-2);
-}
-.chat-input-wrap{
-  display:flex;gap:8px;align-items:flex-end;
-}
-.chat-input{
-  flex:1;background:var(--bg-1);border:1px solid var(--border);
-  border-radius:10px;padding:10px 14px;
-  color:var(--text-0);font-family:'Inter',sans-serif;font-size:12px;
-  resize:none;min-height:40px;max-height:120px;
-  transition:all 0.2s;
-}
-.chat-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
-.chat-send{
-  width:40px;height:40px;border-radius:10px;
-  background:var(--accent);border:none;cursor:pointer;
-  display:grid;place-items:center;transition:all 0.2s;
-  flex-shrink:0;
-}
-.chat-send:hover{background:#2563eb;transform:scale(1.05)}
-.chat-send:disabled{opacity:0.5;cursor:not-allowed}
-.chat-send svg{width:18px;height:18px;fill:white}
-
-.chat-setup{
-  padding:20px;display:flex;flex-direction:column;gap:12px;
-}
-.chat-setup h3{font-size:14px;font-weight:700;margin-bottom:8px}
-.chat-setup .field{display:flex;flex-direction:column;gap:4px}
-.chat-setup label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
-.chat-setup input,.chat-setup select{
-  background:var(--bg-2);border:1px solid var(--border);
-  border-radius:6px;padding:8px 10px;color:var(--text-0);
-  font-family:'Inter',sans-serif;font-size:12px;
-}
-.chat-setup input:focus,.chat-setup select:focus{
-  outline:none;border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(59,130,246,0.15);
-}
-
-.typing-indicator{
-  display:flex;gap:4px;padding:8px 12px;
-}
-.typing-indicator span{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--text-3);animation:typing 1.4s infinite;
-}
-.typing-indicator span:nth-child(2){animation-delay:0.2s}
-.typing-indicator span:nth-child(3){animation-delay:0.4s}
-@keyframes typing{0%,60%,100%{opacity:0.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
 
 /* ====== LAYOUT ====== */
 .main{padding:20px 24px 40px;max-width:1800px;margin:0 auto}
@@ -535,6 +399,271 @@ table.data tbody tr:hover{background:var(--bg-2)}
 .tl-item .d{font-size:11px;color:var(--text-2)}
 .tl-item .meta{font-size:10px;color:var(--text-3);font-family:'JetBrains Mono',monospace;margin-top:2px}
 
+/* ====== CHATBOT ====== */
+.chat-fab{
+  position:fixed;bottom:24px;right:24px;z-index:150;
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,var(--nvidia),#5a9400);
+  border:none;cursor:pointer;
+  display:grid;place-items:center;
+  box-shadow:0 8px 24px rgba(118,185,0,0.4),0 0 0 0 rgba(118,185,0,0.6);
+  transition:all 0.3s;
+  animation:fab-pulse 2.5s infinite;
+}
+.chat-fab:hover{transform:scale(1.08);box-shadow:0 12px 32px rgba(118,185,0,0.6)}
+.chat-fab svg{width:28px;height:28px;fill:white}
+@keyframes fab-pulse{
+  0%{box-shadow:0 8px 24px rgba(118,185,0,0.4),0 0 0 0 rgba(118,185,0,0.6)}
+  70%{box-shadow:0 8px 24px rgba(118,185,0,0.4),0 0 0 16px rgba(118,185,0,0)}
+  100%{box-shadow:0 8px 24px rgba(118,185,0,0.4),0 0 0 0 rgba(118,185,0,0)}
+}
+.chat-fab-badge{
+  position:absolute;top:-4px;right:-4px;
+  background:var(--danger);color:white;
+  width:20px;height:20px;border-radius:50%;
+  font-size:10px;font-weight:700;
+  display:grid;place-items:center;
+  border:2px solid var(--bg-0);
+}
+
+.chat-window{
+  position:fixed;bottom:100px;right:24px;z-index:150;
+  width:420px;max-width:calc(100vw - 48px);
+  height:640px;max-height:calc(100vh - 140px);
+  background:var(--bg-1);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.6);
+  display:none;flex-direction:column;
+  overflow:hidden;
+  animation:chat-open 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.chat-window.active{display:flex}
+@keyframes chat-open{
+  from{opacity:0;transform:translateY(20px) scale(0.95)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.chat-head{
+  background:linear-gradient(135deg,var(--bg-2),var(--bg-3));
+  padding:14px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+  position:relative;
+}
+.chat-head::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--nvidia),var(--accent),var(--purple));
+}
+.chat-avatar{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--nvidia),#5a9400);
+  display:grid;place-items:center;flex-shrink:0;
+  box-shadow:0 0 12px rgba(118,185,0,0.4);
+}
+.chat-avatar svg{width:20px;height:20px;fill:white}
+.chat-head-info{flex:1;min-width:0}
+.chat-head-info .name{font-weight:700;font-size:14px;color:var(--text-0);display:flex;align-items:center;gap:6px}
+.chat-head-info .name .live-dot{width:7px;height:7px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
+.chat-head-info .meta{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;display:flex;align-items:center;gap:6px}
+.chat-head-info .meta .nvidia-tag{
+  background:rgba(118,185,0,0.2);color:var(--nvidia);
+  padding:1px 6px;border-radius:3px;font-size:9px;font-weight:700;
+}
+.chat-head-actions{display:flex;gap:6px}
+.chat-ico-btn{
+  width:28px;height:28px;border-radius:6px;
+  background:transparent;border:1px solid var(--border);
+  display:grid;place-items:center;cursor:pointer;
+  transition:all 0.15s;color:var(--text-2);
+}
+.chat-ico-btn:hover{background:var(--bg-3);color:var(--text-0);border-color:var(--border-strong)}
+.chat-ico-btn svg{width:14px;height:14px;fill:currentColor}
+
+.chat-config{
+  padding:10px 14px;
+  background:var(--bg-2);
+  border-bottom:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;
+}
+.chat-config input{
+  flex:1;background:var(--bg-1);border:1px solid var(--border);
+  border-radius:6px;padding:6px 10px;color:var(--text-0);
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+.chat-config input:focus{outline:none;border-color:var(--nvidia);box-shadow:0 0 0 2px rgba(118,185,0,0.2)}
+.chat-config select{
+  background:var(--bg-1);border:1px solid var(--border);
+  border-radius:6px;padding:6px 8px;color:var(--text-0);
+  font-size:11px;cursor:pointer;
+}
+.chat-config .save-btn{
+  background:var(--nvidia);color:white;border:none;
+  padding:6px 10px;border-radius:6px;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.05em;cursor:pointer;
+}
+.chat-config .save-btn:hover{background:#5a9400}
+.chat-config .save-btn.saved{background:var(--success)}
+
+.chat-body{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:12px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(118,185,0,0.03), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(59,130,246,0.03), transparent 50%),
+    var(--bg-0);
+}
+.msg{
+  display:flex;gap:10px;max-width:85%;
+  animation:msg-in 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes msg-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-avatar{
+  width:28px;height:28px;border-radius:8px;
+  flex-shrink:0;display:grid;place-items:center;
+  font-size:13px;font-weight:700;
+}
+.msg.ai .msg-avatar{background:linear-gradient(135deg,var(--nvidia),#5a9400);color:white}
+.msg.user .msg-avatar{background:var(--accent);color:white}
+.msg-bubble{
+  padding:10px 14px;border-radius:12px;
+  font-size:12.5px;line-height:1.55;color:var(--text-0);
+  word-wrap:break-word;
+}
+.msg.ai .msg-bubble{
+  background:var(--bg-2);border:1px solid var(--border);
+  border-top-left-radius:4px;
+}
+.msg.user .msg-bubble{
+  background:linear-gradient(135deg,var(--accent),#2563eb);
+  color:white;border-top-right-radius:4px;
+}
+.msg-bubble strong{color:var(--nvidia);font-weight:700}
+.msg.user .msg-bubble strong{color:#fff3a0}
+.msg-bubble code{
+  background:var(--bg-0);border:1px solid var(--border);
+  padding:1px 5px;border-radius:3px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--accent-2);
+}
+.msg.user .msg-bubble code{background:rgba(0,0,0,0.2);color:#fff;border-color:rgba(255,255,255,0.1)}
+.msg-bubble ul,.msg-bubble ol{padding-left:18px;margin:6px 0}
+.msg-bubble li{margin:3px 0}
+.msg-bubble h4{font-size:13px;margin:6px 0 4px;color:var(--nvidia)}
+.msg.user .msg-bubble h4{color:#fff3a0}
+.msg-meta{
+  font-size:9px;color:var(--text-3);
+  margin-top:3px;text-align:right;
+  font-family:'JetBrains Mono',monospace;
+}
+.msg.user .msg-meta{text-align:right}
+.msg.ai .msg-meta{text-align:left}
+
+.typing-indicator{
+  display:flex;gap:4px;padding:12px 14px;
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:12px;border-top-left-radius:4px;
+  width:fit-content;
+}
+.typing-indicator span{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--text-2);
+  animation:typing 1.4s infinite;
+}
+.typing-indicator span:nth-child(2){animation-delay:0.2s}
+.typing-indicator span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{
+  0%,60%,100%{opacity:0.3;transform:translateY(0)}
+  30%{opacity:1;transform:translateY(-4px)}
+}
+
+.chat-suggestions{
+  padding:8px 14px;border-top:1px solid var(--border);
+  background:var(--bg-1);
+  display:flex;gap:6px;overflow-x:auto;
+  scrollbar-width:none;
+}
+.chat-suggestions::-webkit-scrollbar{display:none}
+.suggestion{
+  padding:5px 10px;border-radius:14px;
+  background:var(--bg-2);border:1px solid var(--border);
+  font-size:10px;color:var(--text-1);cursor:pointer;
+  white-space:nowrap;transition:all 0.15s;
+  font-weight:500;
+}
+.suggestion:hover{background:var(--bg-3);border-color:var(--nvidia);color:var(--nvidia)}
+
+.chat-input-area{
+  padding:12px 14px;
+  background:var(--bg-1);
+  border-top:1px solid var(--border);
+  display:flex;gap:8px;align-items:flex-end;
+}
+.chat-input-wrap{
+  flex:1;
+  background:var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:8px 12px;
+  display:flex;align-items:flex-end;gap:8px;
+  transition:all 0.2s;
+}
+.chat-input-wrap:focus-within{border-color:var(--nvidia);box-shadow:0 0 0 3px rgba(118,185,0,0.15)}
+.chat-input-wrap textarea{
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--text-0);font-family:'Inter',sans-serif;font-size:13px;
+  resize:none;max-height:120px;line-height:1.5;
+}
+.chat-input-wrap textarea::placeholder{color:var(--text-3)}
+.chat-send-btn{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--nvidia),#5a9400);
+  border:none;cursor:pointer;
+  display:grid;place-items:center;flex-shrink:0;
+  transition:all 0.2s;
+  box-shadow:0 4px 12px rgba(118,185,0,0.3);
+}
+.chat-send-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(118,185,0,0.5)}
+.chat-send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none}
+.chat-send-btn svg{width:16px;height:16px;fill:white}
+
+.chat-error{
+  background:rgba(239,68,68,0.1);
+  border:1px solid rgba(239,68,68,0.3);
+  color:var(--danger);
+  padding:8px 12px;border-radius:8px;
+  font-size:11px;margin-top:6px;
+}
+
+.chat-empty{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:14px;padding:20px;text-align:center;
+}
+.chat-empty .big-ico{
+  width:64px;height:64px;border-radius:16px;
+  background:linear-gradient(135deg,var(--nvidia),#5a9400);
+  display:grid;place-items:center;
+  box-shadow:0 0 40px rgba(118,185,0,0.3);
+}
+.chat-empty .big-ico svg{width:32px;height:32px;fill:white}
+.chat-empty h3{font-size:16px;font-weight:700;color:var(--text-0)}
+.chat-empty p{font-size:12px;color:var(--text-2);max-width:280px}
+.chat-empty .capabilities{
+  display:flex;flex-direction:column;gap:6px;
+  width:100%;max-width:320px;margin-top:6px;
+}
+.chat-empty .cap{
+  padding:8px 12px;background:var(--bg-2);
+  border:1px solid var(--border);border-radius:8px;
+  font-size:11px;color:var(--text-1);text-align:left;
+  display:flex;align-items:center;gap:8px;
+  cursor:pointer;transition:all 0.15s;
+}
+.chat-empty .cap:hover{border-color:var(--nvidia);background:var(--bg-3)}
+.chat-empty .cap svg{width:14px;height:14px;fill:var(--nvidia);flex-shrink:0}
+
 /* ====== RESPONSIVE ====== */
 @media (max-width:1400px){.grid-kpi{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:1100px){.row-2,.row-3{grid-template-columns:1fr}}
@@ -545,7 +674,9 @@ table.data tbody tr:hover{background:var(--bg-2)}
   .grid-kpi{grid-template-columns:repeat(2,1fr)}
   .panel{padding:14px}
   .main{padding:12px}
-  .chat-panel{width:calc(100vw - 48px);right:24px;left:24px}
+  .chat-window{width:calc(100vw - 32px);right:16px;bottom:88px;height:calc(100vh - 120px)}
+  .chat-fab{width:52px;height:52px;right:16px;bottom:16px}
+  .chat-fab svg{width:24px;height:24px}
 }
 
 .empty{text-align:center;padding:40px;color:var(--text-3);font-size:12px}
@@ -653,22 +784,14 @@ table.data tbody tr:hover{background:var(--bg-2)}
       </div>
       <div class="map-wrap">
         <svg class="map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
-          <!-- Simplified world map polygons -->
           <g class="continents">
-            <!-- North America -->
             <path class="continent" d="M 120 120 L 220 100 L 280 140 L 260 220 L 200 240 L 160 220 L 130 180 Z"/>
-            <!-- South America -->
             <path class="continent" d="M 260 280 L 320 270 L 340 350 L 310 420 L 280 400 L 260 340 Z"/>
-            <!-- Europe -->
             <path class="continent" d="M 460 120 L 540 110 L 560 150 L 520 180 L 470 170 Z"/>
-            <!-- Africa -->
             <path class="continent" d="M 500 200 L 560 200 L 580 280 L 550 360 L 510 340 L 500 270 Z"/>
-            <!-- Asia -->
             <path class="continent" d="M 580 100 L 780 110 L 820 180 L 760 230 L 660 220 L 600 180 Z"/>
-            <!-- Oceania -->
             <path class="continent" d="M 800 340 L 880 330 L 900 380 L 840 400 L 810 380 Z"/>
           </g>
-          <!-- Routes will be added dynamically -->
           <g id="routes-layer"></g>
           <g id="ports-layer"></g>
         </svg>
@@ -915,61 +1038,94 @@ table.data tbody tr:hover{background:var(--bg-2)}
   </div>
 </div>
 
-<!-- ====== CHATBOT ====== -->
-<button class="chat-toggle" id="chat-toggle" onclick="toggleChat()">
-  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
-  <span class="badge" id="chat-badge" style="display:none">1</span>
+<!-- ========================================================= -->
+<!-- ====== NVIDIA CHATBOT ==================================== -->
+<!-- ========================================================= -->
+
+<button class="chat-fab" id="chat-fab" title="AI Supply Chain Assistant (NVIDIA)">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+  <span class="chat-fab-badge">AI</span>
 </button>
 
-<div class="chat-panel" id="chat-panel">
-  <div class="chat-header">
-    <div class="chat-header-left">
-      <div class="chat-avatar">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-      </div>
-      <div>
-        <div class="chat-title">Supply Chain Assistant</div>
-        <div class="chat-status">Powered by NVIDIA NIM</div>
+<div class="chat-window" id="chat-window">
+  <div class="chat-head">
+    <div class="chat-avatar">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
+    </div>
+    <div class="chat-head-info">
+      <div class="name">ChainGPT Assistant <span class="live-dot"></span></div>
+      <div class="meta">
+        Powered by <span class="nvidia-tag">NVIDIA NIM</span>
+        <span id="chat-model-label">llama-3.1-nemotron</span>
       </div>
     </div>
-    <button class="btn-ico" onclick="toggleChat()" style="width:28px;height:28px">
-      <svg viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-    </button>
+    <div class="chat-head-actions">
+      <button class="chat-ico-btn" onclick="clearChat()" title="Clear conversation">
+        <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+      </button>
+      <button class="chat-ico-btn" onclick="toggleChat()" title="Minimize">
+        <svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>
+      </button>
+    </div>
   </div>
-  
+
+  <div class="chat-config">
+    <input type="password" id="chat-api-key" placeholder="NVIDIA API Key (nvapi-...)">
+    <select id="chat-model-select">
+      <option value="nvidia/llama-3.1-nemotron-ultra-251b">Nemotron Ultra 251B</option>
+      <option value="nvidia/llama-3.3-nemotron-super-49b">Nemotron Super 49B</option>
+      <option value="meta/llama-3.1-405b-instruct">Llama 3.1 405B</option>
+      <option value="meta/llama-3.1-70b-instruct">Llama 3.1 70B</option>
+      <option value="deepseek-ai/deepseek-r1">DeepSeek R1</option>
+      <option value="google/gemma-3-27b-it">Gemma 3 27B</option>
+    </select>
+    <button class="save-btn" id="chat-save-key" onclick="saveApiKey()">Save</button>
+  </div>
+
   <div class="chat-body" id="chat-body">
-    <div class="chat-setup" id="chat-setup">
-      <h3>🔑 Configure NVIDIA API</h3>
-      <div class="field">
-        <label>API Key</label>
-        <input type="password" id="nvidia-api-key" placeholder="nvapi-xxxxxxxxxxxxxxxx">
+    <div class="chat-empty" id="chat-empty">
+      <div class="big-ico">
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
       </div>
-      <div class="field">
-        <label>Model</label>
-        <select id="nvidia-model">
-          <option value="meta/llama-3.1-70b-instruct">Llama 3.1 70B Instruct</option>
-          <option value="meta/llama-3.1-405b-instruct">Llama 3.1 405B Instruct</option>
-          <option value="nvidia/llama-3.1-nemotron-70b-instruct">Nemotron 70B Instruct</option>
-          <option value="google/gemma-2-27b-it">Gemma 2 27B</option>
-          <option value="mistralai/mixtral-8x7b-instruct-v0.1">Mixtral 8x7B</option>
-        </select>
-      </div>
-      <button class="btn btn-p" onclick="saveChatConfig()" style="width:100%;justify-content:center;margin-top:8px">
-        Save Configuration
-      </button>
-      <div style="font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.6">
-        💡 Get your API key at <a href="https://build.nvidia.com" target="_blank" style="color:var(--accent);text-decoration:none">build.nvidia.com</a>
+      <h3>ChainGPT Assistant</h3>
+      <p>Seu copiloto de supply chain. Faça perguntas sobre operações, KPIs, rotas ou peça análises.</p>
+      <div class="capabilities">
+        <div class="cap" onclick="sendSuggestion('Faça um resumo executivo dos KPIs atuais')">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+          Resumo executivo dos KPIs atuais
+        </div>
+        <div class="cap" onclick="sendSuggestion('Quais são os 3 embarques mais críticos agora?')">
+          <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 15h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          Embarques mais críticos agora
+        </div>
+        <div class="cap" onclick="sendSuggestion('Analise a distribuição modal e sugira otimizações')">
+          <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg>
+          Análise da distribuição modal
+        </div>
+        <div class="cap" onclick="sendSuggestion('Como está o desempenho OTIF e o que posso melhorar?')">
+          <svg viewBox="0 0 24 24"><path d="M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2z"/></svg>
+          Desempenho OTIF e melhorias
+        </div>
       </div>
     </div>
   </div>
-  
-  <div class="chat-input-area" id="chat-input-area" style="display:none">
+
+  <div class="chat-suggestions" id="chat-suggestions">
+    <div class="suggestion" onclick="sendSuggestion('Total de TEUs em trânsito')">📦 TEUs em trânsito</div>
+    <div class="suggestion" onclick="sendSuggestion('Top carriers por performance')">🚢 Top carriers</div>
+    <div class="suggestion" onclick="sendSuggestion('Embarques atrasados')">⚠️ Atrasados</div>
+    <div class="suggestion" onclick="sendSuggestion('Emissões CO2 por modal')">🌱 CO₂ por modal</div>
+    <div class="suggestion" onclick="sendSuggestion('Rotas mais custosas')">💰 Rotas custosas</div>
+    <div class="suggestion" onclick="sendSuggestion('Recomendações de rota China→BR')">🗺️ China→BR</div>
+  </div>
+
+  <div class="chat-input-area">
     <div class="chat-input-wrap">
-      <textarea class="chat-input" id="chat-input" placeholder="Ask about shipments, routes, carriers..." rows="1"></textarea>
-      <button class="chat-send" id="chat-send" onclick="sendMessage()">
-        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      </button>
+      <textarea id="chat-input" placeholder="Pergunte algo sobre sua operação logística..." rows="1"></textarea>
     </div>
+    <button class="chat-send-btn" id="chat-send" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
   </div>
 </div>
 
@@ -979,10 +1135,10 @@ table.data tbody tr:hover{background:var(--bg-2)}
 // =================================================================
 
 const STORAGE_KEY = 'globalchain_os_v1';
-const CHAT_CONFIG_KEY = 'globalchain_chat_config';
-const CHAT_HISTORY_KEY = 'globalchain_chat_history';
+const CHAT_STORAGE = 'globalchain_chat_v1';
+const CHAT_KEY_STORAGE = 'nvidia_api_key';
+const CHAT_MODEL_STORAGE = 'nvidia_model';
 
-// ----- Reference Data -----
 const COUNTRIES = {
   'CN':{name:'China',flag:'🇨🇳',ports:['CNSHA — Shanghai','CNNGB — Ningbo','CNSHE — Shekou','CNYTN — Yantian','CNTAO — Qingdao']},
   'VN':{name:'Vietnam',flag:'🇻🇳',ports:['VNSGN — Ho Chi Minh','VNHPH — Haiphong']},
@@ -1031,34 +1187,23 @@ const CARRIERS = [
 const CONTAINERS = ['20\' Dry Van','40\' Dry Van','40\' High Cube','45\' High Cube','20\' Reefer','40\' Reefer','20\' Open Top','40\' Flat Rack','Tank Container','LCL (Less than Container)'];
 
 const INCOTERMS = [
-  {code:'EXW',name:'Ex Works'},
-  {code:'FCA',name:'Free Carrier'},
-  {code:'FAS',name:'Free Alongside Ship'},
-  {code:'FOB',name:'Free On Board'},
-  {code:'CFR',name:'Cost and Freight'},
-  {code:'CIF',name:'Cost, Insurance & Freight'},
-  {code:'CPT',name:'Carriage Paid To'},
-  {code:'CIP',name:'Carriage and Insurance Paid To'},
-  {code:'DAP',name:'Delivered at Place'},
-  {code:'DPU',name:'Delivered at Place Unloaded'},
+  {code:'EXW',name:'Ex Works'},{code:'FCA',name:'Free Carrier'},
+  {code:'FAS',name:'Free Alongside Ship'},{code:'FOB',name:'Free On Board'},
+  {code:'CFR',name:'Cost and Freight'},{code:'CIF',name:'Cost, Insurance & Freight'},
+  {code:'CPT',name:'Carriage Paid To'},{code:'CIP',name:'Carriage and Insurance Paid To'},
+  {code:'DAP',name:'Delivered at Place'},{code:'DPU',name:'Delivered at Place Unloaded'},
   {code:'DDP',name:'Delivered Duty Paid'}
 ];
 
 const CURRENCIES = ['USD','EUR','BRL','CNY','GBP','JPY'];
 
 const PRODUCTS = [
-  {name:'Consumer Electronics',hs:'8471.30'},
-  {name:'Semiconductors & ICs',hs:'8542.31'},
-  {name:'Automotive Parts',hs:'8708.99'},
-  {name:'Textile & Apparel',hs:'6109.10'},
-  {name:'Pharmaceuticals',hs:'3004.90'},
-  {name:'Machinery & Equipment',hs:'8428.90'},
-  {name:'Chemicals (Bulk)',hs:'2806.10'},
-  {name:'Agricultural Commodities',hs:'1001.99'},
-  {name:'Frozen Foodstuffs',hs:'0303.89'},
-  {name:'Medical Devices',hs:'9018.90'},
-  {name:'Industrial Metals',hs:'7601.10'},
-  {name:'Solar Panels',hs:'8541.40'}
+  {name:'Consumer Electronics',hs:'8471.30'},{name:'Semiconductors & ICs',hs:'8542.31'},
+  {name:'Automotive Parts',hs:'8708.99'},{name:'Textile & Apparel',hs:'6109.10'},
+  {name:'Pharmaceuticals',hs:'3004.90'},{name:'Machinery & Equipment',hs:'8428.90'},
+  {name:'Chemicals (Bulk)',hs:'2806.10'},{name:'Agricultural Commodities',hs:'1001.99'},
+  {name:'Frozen Foodstuffs',hs:'0303.89'},{name:'Medical Devices',hs:'9018.90'},
+  {name:'Industrial Metals',hs:'7601.10'},{name:'Solar Panels',hs:'8541.40'}
 ];
 
 const STATUSES = [
@@ -1071,27 +1216,17 @@ const STATUSES = [
 
 const RISKS = ['low','medium','high'];
 
-// Port coordinates (approximate SVG coords on 1000x500 map)
 const PORT_COORDS = {
   'CNSHA':[755,170],'CNNGB':[765,180],'CNSHE':[750,185],'CNTAO':[745,160],
-  'VNSGN':[720,215],'VNHPH':[715,200],
-  'KRPUS':[790,150],'KRINC':[785,145],
-  'JPTYO':[820,155],'JPOSA':[810,160],
-  'SGSIN':[715,260],
-  'INNSA':[635,215],'INMAA':[645,230],
-  'AEJEA':[580,210],
-  'DEHAM':[510,125],'DEBRV':[505,130],
-  'NLRTM':[500,135],
-  'BEANR':[500,140],
-  'GBFXT':[480,130],'GBLGP':[485,135],
-  'USLAX':[145,180],'USLGB':[148,185],'USNYC':[235,155],'USSAV':[220,175],'USCHI':[215,160],
-  'CAVRN':[140,125],'CATOR':[225,140],
-  'MXZLO':[175,215],'MXVER':[185,220],
-  'BRSSZ':[295,330],'BRRIO':[305,325],'BRPOA':[290,355],'BRFOR':[330,295],
-  'ARBUE':[285,395],
-  'CLSAI':[260,395],'CLVAP':[255,390],
-  'ZACPT':[515,370],'ZADUR':[540,345],
-  'AUSYD':[875,370],'AUMEL':[865,385],
+  'VNSGN':[720,215],'VNHPH':[715,200],'KRPUS':[790,150],'KRINC':[785,145],
+  'JPTYO':[820,155],'JPOSA':[810,160],'SGSIN':[715,260],'INNSA':[635,215],
+  'INMAA':[645,230],'AEJEA':[580,210],'DEHAM':[510,125],'DEBRV':[505,130],
+  'NLRTM':[500,135],'BEANR':[500,140],'GBFXT':[480,130],'GBLGP':[485,135],
+  'USLAX':[145,180],'USLGB':[148,185],'USNYC':[235,155],'USSAV':[220,175],
+  'USCHI':[215,160],'CAVRN':[140,125],'CATOR':[225,140],'MXZLO':[175,215],
+  'MXVER':[185,220],'BRSSZ':[295,330],'BRRIO':[305,325],'BRPOA':[290,355],
+  'BRFOR':[330,295],'ARBUE':[285,395],'CLSAI':[260,395],'CLVAP':[255,390],
+  'ZACPT':[515,370],'ZADUR':[540,345],'AUSYD':[875,370],'AUMEL':[865,385],
   'TRIST':[555,160],'TRALI':[550,165]
 };
 
@@ -1101,8 +1236,8 @@ const PORT_COORDS = {
 
 let shipments = [];
 let editingId = null;
-let chatConfig = null;
 let chatHistory = [];
+let isChatBusy = false;
 
 function uid(){
   const year = new Date().getFullYear();
@@ -1110,15 +1245,10 @@ function uid(){
   return `GCH-${year}-${String(count).padStart(4,'0')}`;
 }
 
-function save(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(shipments));
-}
-
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(shipments)); }
 function load(){
   const raw = localStorage.getItem(STORAGE_KEY);
-  if(raw){
-    try{ shipments = JSON.parse(raw); return; }catch(e){}
-  }
+  if(raw){ try{ shipments = JSON.parse(raw); return; }catch(e){} }
   shipments = generateMockData();
   save();
 }
@@ -1156,55 +1286,35 @@ function generateMockData(){
     {o:'DE',op:'DEHAM',d:'BE',dp:'BEANR',m:'road',pr:'Chemicals (Bulk)',val:95000,cur:'EUR',teu:1,w:24000},
     {o:'US',op:'USLAX',d:'CA',dp:'CAVRN',m:'road',pr:'Consumer Electronics',val:145000,cur:'USD',teu:1,w:15000}
   ];
-
   const data = [];
   const today = new Date();
-  
   routes.forEach((r,i)=>{
     const leadTime = r.m==='air'?Math.floor(Math.random()*5)+5 : r.m==='rail'?Math.floor(Math.random()*10)+18 : r.m==='road'?Math.floor(Math.random()*5)+3 : Math.floor(Math.random()*20)+22;
     const etdOffset = Math.floor(Math.random()*20)-10;
     const etd = new Date(today); etd.setDate(etd.getDate()+etdOffset);
     const eta = new Date(etd); eta.setDate(eta.getDate()+leadTime);
-
     let status;
-    if(etd > today){
-      status = 'pending';
-    } else if(eta < today){
-      status = Math.random()<0.85 ? 'delivered' : 'delayed';
-    } else {
+    if(etd > today) status = 'pending';
+    else if(eta < today) status = Math.random()<0.85 ? 'delivered' : 'delayed';
+    else {
       const prog = (today-etd)/(eta-etd);
       if(prog < 0.6) status = 'transit';
       else if(prog < 0.9) status = Math.random()<0.7 ? 'transit' : 'customs';
       else status = Math.random()<0.3 ? 'delayed' : 'customs';
     }
-
     const carrier = CARRIERS[Math.floor(Math.random()*CARRIERS.length)].name;
     const incoterm = INCOTERMS[Math.floor(Math.random()*INCOTERMS.length)].code;
     const container = r.m==='sea' ? CONTAINERS[Math.floor(Math.random()*6)] : (r.m==='air' ? 'Air Cargo Pallet' : r.m==='rail' ? 'Rail Container' : 'Trailer 53\'');
     const risk = Math.random() < 0.6 ? 'low' : (Math.random() < 0.7 ? 'medium' : 'high');
     const product = PRODUCTS.find(p=>p.name===r.pr) || PRODUCTS[0];
-
     data.push({
       id: `GCH-${today.getFullYear()}-${String(i+1).padStart(4,'0')}`,
-      product: r.pr,
-      hscode: product.hs + '.' + String(Math.floor(Math.random()*99)).padStart(2,'0'),
-      qty: Math.floor(Math.random()*5000)+100,
-      origin: r.o,
-      originPort: r.op,
-      dest: r.d,
-      destPort: r.dp,
-      mode: r.m,
-      carrier,
-      container,
-      teus: r.teu,
-      value: r.val,
-      currency: r.cur,
-      weight: r.w,
-      incoterm,
-      etd: etd.toISOString().slice(0,10),
-      eta: eta.toISOString().slice(0,10),
-      status,
-      risk,
+      product: r.pr, hscode: product.hs + '.' + String(Math.floor(Math.random()*99)).padStart(2,'0'),
+      qty: Math.floor(Math.random()*5000)+100, origin: r.o, originPort: r.op,
+      dest: r.d, destPort: r.dp, mode: r.m, carrier, container,
+      teus: r.teu, value: r.val, currency: r.cur, weight: r.w, incoterm,
+      etd: etd.toISOString().slice(0,10), eta: eta.toISOString().slice(0,10),
+      status, risk,
       co2: r.m==='sea' ? r.teu*2.8 : r.m==='air' ? r.w*0.003 : r.m==='rail' ? r.teu*0.8 : r.w*0.0001,
       notes: 'Standard documentation. B/L issued. Commercial invoice attached.',
       created: new Date(Date.now()-Math.random()*30*86400000).toISOString()
@@ -1224,22 +1334,14 @@ function fmt$(v,cur='USD'){
   if(v >= 1e3) return sym + (v/1e3).toFixed(2)+'K';
   return sym + v.toFixed(2);
 }
-
 function fmtN(v,d=1){return Number(v).toLocaleString('en-US',{maximumFractionDigits:d})}
-
 function toUSD(v,cur){
   const rates = {USD:1, EUR:1.08, BRL:0.18, CNY:0.14, GBP:1.27, JPY:0.0067};
   return v * (rates[cur]||1);
 }
-
-function daysBetween(a,b){
-  return Math.round((new Date(b)-new Date(a))/86400000);
-}
-
+function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
 function shipmentProgress(s){
-  const today = new Date();
-  const etd = new Date(s.etd);
-  const eta = new Date(s.eta);
+  const today = new Date(); const etd = new Date(s.etd); const eta = new Date(s.eta);
   if(today < etd) return 0;
   if(today > eta) return s.status==='delivered' ? 100 : 95;
   return Math.min(99, Math.round((today-etd)/(eta-etd)*100));
@@ -1250,16 +1352,13 @@ function shipmentProgress(s){
 // =================================================================
 
 function calcKPIs(){
-  let totalFreight = 0, totalTEU = 0, totalCO2 = 0, totalLead = 0;
-  let onTime = 0, late = 0, early = 0, inFull = 0, delivered = 0;
-  
+  let totalFreight=0,totalTEU=0,totalCO2=0,totalLead=0;
+  let onTime=0,late=0,early=0,inFull=0,delivered=0;
   shipments.forEach(s=>{
-    totalFreight += toUSD(s.value*0.085, s.currency); // ~8.5% freight cost
+    totalFreight += toUSD(s.value*0.085, s.currency);
     totalTEU += s.teus;
     totalCO2 += s.co2;
-    const lead = daysBetween(s.etd, s.eta);
-    totalLead += lead;
-    
+    totalLead += daysBetween(s.etd, s.eta);
     if(s.status==='delivered'){
       delivered++;
       const realDays = daysBetween(s.etd, new Date());
@@ -1270,19 +1369,15 @@ function calcKPIs(){
       if(Math.random()<0.92) inFull++;
     }
   });
-
   const avgLead = shipments.length ? totalLead/shipments.length : 0;
   const otif = delivered ? Math.round(((onTime+early)/delivered)*100) : 0;
   const costPerTEU = totalTEU ? totalFreight/totalTEU : 0;
-
   document.getElementById('k-freight').textContent = fmt$(totalFreight,'USD');
   document.getElementById('k-teu').textContent = fmtN(totalTEU,0)+' TEU';
   document.getElementById('k-lead').textContent = avgLead.toFixed(1)+' days';
   document.getElementById('k-otif').textContent = otif+'%';
   document.getElementById('k-co2').textContent = fmtN(totalCO2,1)+' t';
   document.getElementById('k-cpteu').textContent = fmt$(costPerTEU,'USD');
-
-  // OTIF ring
   const ring = document.getElementById('otif-ring');
   const circ = 2 * Math.PI * 42;
   ring.setAttribute('stroke-dasharray', circ);
@@ -1294,15 +1389,13 @@ function calcKPIs(){
   document.getElementById('otif-late').textContent = late;
   document.getElementById('otif-full').textContent = delivered ? Math.round((inFull/delivered)*100)+'%' : '—';
   document.getElementById('otif-breach').textContent = late;
-
-  // Top bar
   document.getElementById('pill-active').textContent = shipments.filter(s=>s.status==='transit'||s.status==='customs').length;
   document.getElementById('pill-transit').textContent = shipments.filter(s=>s.status==='transit').length;
   document.getElementById('pill-alerts').textContent = shipments.filter(s=>s.status==='delayed'||s.risk==='high').length;
 }
 
 // =================================================================
-// ============ MAP RENDERING ======================================
+// ============ MAP, BARS, CARRIERS, FEED, TABLE ===================
 // =================================================================
 
 function renderMap(){
@@ -1310,45 +1403,30 @@ function renderMap(){
   const portsLayer = document.getElementById('ports-layer');
   routesLayer.innerHTML = '';
   portsLayer.innerHTML = '';
-
-  // Active routes (only show transit/customs)
   const active = shipments.filter(s=>s.status==='transit'||s.status==='customs'||s.status==='delayed');
   const portSet = new Set();
-  
   active.forEach((s,idx)=>{
-    const c1 = PORT_COORDS[s.originPort];
-    const c2 = PORT_COORDS[s.destPort];
+    const c1 = PORT_COORDS[s.originPort]; const c2 = PORT_COORDS[s.destPort];
     if(!c1 || !c2) return;
-    
     let cls = 'route-line';
     if(s.status==='transit') cls += ' c2';
     else if(s.status==='delayed') cls += ' c4';
     else if(s.status==='customs') cls += ' c3';
-    
     const mid = [(c1[0]+c2[0])/2, Math.min(c1[1],c2[1])-40];
     const path = `M ${c1[0]} ${c1[1]} Q ${mid[0]} ${mid[1]} ${c2[0]} ${c2[1]}`;
-    
     const el = document.createElementNS('http://www.w3.org/2000/svg','path');
-    el.setAttribute('d', path);
-    el.setAttribute('class', cls);
+    el.setAttribute('d', path); el.setAttribute('class', cls);
     el.setAttribute('style', `animation-delay:${idx*0.3}s`);
     routesLayer.appendChild(el);
-
-    portSet.add(s.originPort);
-    portSet.add(s.destPort);
+    portSet.add(s.originPort); portSet.add(s.destPort);
   });
-
-  // Also show ports from all shipments (just the dots)
   const allPorts = new Set();
   shipments.forEach(s=>{allPorts.add(s.originPort); allPorts.add(s.destPort)});
-  
   allPorts.forEach(p=>{
-    const c = PORT_COORDS[p];
-    if(!c) return;
+    const c = PORT_COORDS[p]; if(!c) return;
     const isActive = portSet.has(p);
     const el = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    el.setAttribute('cx', c[0]);
-    el.setAttribute('cy', c[1]);
+    el.setAttribute('cx', c[0]); el.setAttribute('cy', c[1]);
     el.setAttribute('r', isActive ? 4 : 2.5);
     el.setAttribute('class', 'port' + (isActive ? ' c2' : ''));
     if(isActive) el.setAttribute('style','animation:pulse 2s infinite');
@@ -1356,41 +1434,25 @@ function renderMap(){
   });
 }
 
-// =================================================================
-// ============ MODAL DISTRIBUTION =================================
-// =================================================================
-
 function renderModalBars(){
   const counts = {};
   shipments.forEach(s=>counts[s.mode]=(counts[s.mode]||0)+1);
   const total = shipments.length || 1;
-  
   const colors = {sea:'var(--accent)',air:'var(--purple)',road:'var(--warning)',rail:'var(--success)'};
   const icons = {sea:'🚢',air:'✈️',road:'🚛',rail:'🚆'};
-  
-  const el = document.getElementById('modal-bars');
-  el.innerHTML = '';
-  
+  const el = document.getElementById('modal-bars'); el.innerHTML = '';
   MODES.forEach(m=>{
     const count = counts[m.code] || 0;
     const pct = (count/total*100);
-    const row = document.createElement('div');
-    row.className = 'modal-row';
+    const row = document.createElement('div'); row.className = 'modal-row';
     row.innerHTML = `
       <div class="name">${icons[m.code]} ${m.name.split(' ')[0]}</div>
-      <div class="bar">
-        <div class="bar-fill" style="width:${pct}%;background:${colors[m.code]}">${count}</div>
-      </div>
+      <div class="bar"><div class="bar-fill" style="width:${pct}%;background:${colors[m.code]}">${count}</div></div>
       <div class="pct">${pct.toFixed(1)}%</div>
-      <div class="vol">${count} shipments</div>
-    `;
+      <div class="vol">${count} shipments</div>`;
     el.appendChild(row);
   });
 }
-
-// =================================================================
-// ============ CARRIER RANKING ====================================
-// =================================================================
 
 function renderCarrierRanking(){
   const counts = {};
@@ -1400,14 +1462,11 @@ function renderCarrierRanking(){
     counts[s.carrier].teu += s.teus;
     if(s.status==='delivered') counts[s.carrier].onTime++;
   });
-  
   const arr = Object.entries(counts).map(([name,d])=>{
     const score = d.shipments ? Math.round((d.onTime + d.shipments*0.5) / d.shipments * 100) : 0;
     return {name, ...d, score};
   }).sort((a,b)=>b.score-a.score).slice(0,5);
-  
-  const el = document.getElementById('carrier-list');
-  el.innerHTML = '';
+  const el = document.getElementById('carrier-list'); el.innerHTML = '';
   arr.forEach((c,i)=>{
     const carrierMeta = CARRIERS.find(x=>x.name===c.name);
     const trend = Math.random()<0.7 ? 'up' : 'down';
@@ -1419,88 +1478,40 @@ function renderCarrierRanking(){
       <div class="name">${c.name}<small>${carrierMeta?.type||'Carrier'}</small></div>
       <div class="teu">${c.teu.toFixed(1)} TEU</div>
       <div class="score">${c.score}%</div>
-      <div class="trend ${trend}">${trend==='up'?'▲':'▼'} ${trendVal}%</div>
-    `;
+      <div class="trend ${trend}">${trend==='up'?'▲':'▼'} ${trendVal}%</div>`;
     el.appendChild(row);
   });
 }
 
-// =================================================================
-// ============ LIVE FEED ==========================================
-// =================================================================
-
 function renderFeed(){
-  const el = document.getElementById('live-feed');
-  el.innerHTML = '';
-  
+  const el = document.getElementById('live-feed'); el.innerHTML = '';
   const events = [];
   shipments.forEach(s=>{
-    const origC = COUNTRIES[s.origin];
-    const destC = COUNTRIES[s.dest];
+    const origC = COUNTRIES[s.origin]; const destC = COUNTRIES[s.dest];
     let type='ok', title='', desc='';
     const progress = shipmentProgress(s);
-    
-    if(s.status==='transit'){
-      type='ok';
-      title=`${s.id} in transit`;
-      desc=`${origC.flag} ${origC.ports.find(p=>p.startsWith(s.originPort))?.split('—')[1]||s.originPort} → ${destC.flag} ${destC.ports.find(p=>p.startsWith(s.destPort))?.split('—')[1]||s.destPort} — ${progress}% complete`;
-    } else if(s.status==='customs'){
-      type='warn';
-      title=`${s.id} in customs`;
-      desc=`Awaiting clearance at ${destC.flag} ${destC.ports.find(p=>p.startsWith(s.destPort))?.split('—')[1]||s.destPort}`;
-    } else if(s.status==='delayed'){
-      type='err';
-      title=`${s.id} delayed`;
-      desc=`SLA breach detected — ${destC.flag} route`;
-    } else if(s.status==='delivered'){
-      type='ok';
-      title=`${s.id} delivered`;
-      desc=`Successfully received at ${destC.flag} destination`;
-    } else {
-      type='ok';
-      title=`${s.id} booked`;
-      desc=`Awaiting pickup from ${origC.flag} ${origC.ports.find(p=>p.startsWith(s.originPort))?.split('—')[1]||s.originPort}`;
-    }
-    
-    const minsAgo = Math.floor(Math.random()*180);
-    events.push({type,title,desc,minsAgo,sid:s.id});
+    if(s.status==='transit'){ type='ok'; title=`${s.id} in transit`; desc=`${origC.flag} ${origC.ports.find(p=>p.startsWith(s.originPort))?.split('—')[1]||s.originPort} → ${destC.flag} ${destC.ports.find(p=>p.startsWith(s.destPort))?.split('—')[1]||s.destPort} — ${progress}%`; }
+    else if(s.status==='customs'){ type='warn'; title=`${s.id} in customs`; desc=`Awaiting clearance at ${destC.flag}`; }
+    else if(s.status==='delayed'){ type='err'; title=`${s.id} delayed`; desc=`SLA breach — ${destC.flag} route`; }
+    else if(s.status==='delivered'){ type='ok'; title=`${s.id} delivered`; desc=`Received at ${destC.flag}`; }
+    else { type='ok'; title=`${s.id} booked`; desc=`Awaiting pickup from ${origC.flag}`; }
+    events.push({type,title,desc,minsAgo:Math.floor(Math.random()*180),sid:s.id});
   });
-  
-  events.sort((a,b)=>a.minsAgo-b.minsAgo);
-  events.slice(0,8).forEach(ev=>{
-    const it = document.createElement('div');
-    it.className = 'feed-item '+ev.type;
+  events.sort((a,b)=>a.minsAgo-b.minsAgo).slice(0,8).forEach(ev=>{
+    const it = document.createElement('div'); it.className = 'feed-item '+ev.type;
     const timeStr = ev.minsAgo<60 ? `${ev.minsAgo}m ago` : `${Math.floor(ev.minsAgo/60)}h ago`;
-    const icoSvg = ev.type==='err'
-      ? '<svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 15h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>'
-      : ev.type==='warn'
-      ? '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>'
-      : '<svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg>';
-    it.innerHTML = `
-      <div class="ic">${icoSvg}</div>
-      <div class="main">
-        <div class="title">${ev.title}</div>
-        <div class="desc">${ev.desc}</div>
-      </div>
-      <div class="time mono">${timeStr}</div>
-    `;
+    const icoSvg = ev.type==='err'?'<svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2z"/></svg>':ev.type==='warn'?'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg>';
+    it.innerHTML = `<div class="ic">${icoSvg}</div><div class="main"><div class="title">${ev.title}</div><div class="desc">${ev.desc}</div></div><div class="time mono">${timeStr}</div>`;
     el.appendChild(it);
   });
 }
 
-// =================================================================
-// ============ TABLE ==============================================
-// =================================================================
-
 function renderTable(){
-  const tbody = document.getElementById('tbl-body');
-  tbody.innerHTML = '';
-  
+  const tbody = document.getElementById('tbl-body'); tbody.innerHTML = '';
   const search = (document.getElementById('f-search').value||'').toLowerCase();
   const fMode = document.getElementById('f-filter-mode').value;
   const fStatus = document.getElementById('f-filter-status').value;
   const fRisk = document.getElementById('f-filter-risk').value;
-  
   let filtered = shipments.filter(s=>{
     if(search && !(s.id.toLowerCase().includes(search) || s.product.toLowerCase().includes(search) || s.carrier.toLowerCase().includes(search))) return false;
     if(fMode && s.mode!==fMode) return false;
@@ -1508,72 +1519,48 @@ function renderTable(){
     if(fRisk && s.risk!==fRisk) return false;
     return true;
   }).sort((a,b)=>new Date(b.created)-new Date(a.created));
-  
   document.getElementById('tbl-count').textContent = filtered.length;
-  
-  if(filtered.length===0){
-    tbody.innerHTML = '<tr><td colspan="13" class="empty">No shipments match your filters</td></tr>';
-    return;
-  }
-  
+  if(filtered.length===0){ tbody.innerHTML = '<tr><td colspan="13" class="empty">No shipments match your filters</td></tr>'; return; }
   filtered.forEach(s=>{
-    const orig = COUNTRIES[s.origin];
-    const dest = COUNTRIES[s.dest];
+    const orig = COUNTRIES[s.origin]; const dest = COUNTRIES[s.dest];
     const origPort = orig.ports.find(p=>p.startsWith(s.originPort))?.split('—')[1] || s.originPort;
     const destPort = dest.ports.find(p=>p.startsWith(s.destPort))?.split('—')[1] || s.destPort;
     const progress = shipmentProgress(s);
-    const today = new Date();
-    const eta = new Date(s.eta);
+    const today = new Date(); const eta = new Date(s.eta);
     let etaClass = 'eta';
     if(s.status!=='delivered' && eta < today) etaClass += ' late';
     else if(s.status==='delivered' && eta > today) etaClass += ' early';
-    
     const modeTag = {sea:'tag-sea',air:'tag-air',road:'tag-road',rail:'tag-rail'}[s.mode];
     const modeLabel = {sea:'SEA',air:'AIR',road:'ROAD',rail:'RAIL'}[s.mode];
     const statusClass = {pending:'s-pending',transit:'s-transit',customs:'s-customs',delivered:'s-delivered',delayed:'s-delayed'}[s.status];
     const statusLabel = STATUSES.find(x=>x.code===s.status)?.name || s.status;
     const riskClass = {low:'risk-low',medium:'risk-med',high:'risk-high'}[s.risk];
     const riskLabel = {low:'LOW',medium:'MED',high:'HIGH'}[s.risk];
-    
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><span class="sid">${s.id}</span></td>
-      <td>
-        <div style="font-weight:600;color:var(--text-0)">${s.product}</div>
-        <div class="mono" style="font-size:9px;color:var(--text-3)">${s.hscode} · Qty ${fmtN(s.qty,0)}</div>
-      </td>
-      <td>
-        <div class="route-cell">
-          <span class="country-flag">${orig.flag}</span>${origPort}
-          <span class="arrow">→</span>
-          <span class="country-flag">${dest.flag}</span>${destPort}
-        </div>
-        <div class="mono" style="font-size:9px;color:var(--text-3);margin-top:2px">${s.originPort} → ${s.destPort}</div>
-      </td>
+      <td><div style="font-weight:600;color:var(--text-0)">${s.product}</div><div class="mono" style="font-size:9px;color:var(--text-3)">${s.hscode} · Qty ${fmtN(s.qty,0)}</div></td>
+      <td><div class="route-cell"><span class="country-flag">${orig.flag}</span>${origPort}<span class="arrow">→</span><span class="country-flag">${dest.flag}</span>${destPort}</div><div class="mono" style="font-size:9px;color:var(--text-3);margin-top:2px">${s.originPort} → ${s.destPort}</div></td>
       <td><span class="tag ${modeTag}">${modeLabel}</span></td>
       <td style="font-weight:500;color:var(--text-0)">${s.carrier}</td>
       <td><span class="mono" style="color:var(--gold);font-weight:600">${s.incoterm}</span></td>
       <td class="mono">${s.teus} TEU · ${fmtN(s.weight,0)}kg</td>
       <td><span class="cur">${s.currency}</span><span class="val">${fmt$(s.value,s.currency)}</span></td>
-      <td>
-        <div class="mono" style="font-size:10px;color:var(--text-2)">ETD ${s.etd}</div>
-        <div class="${etaClass}">ETA ${s.eta}</div>
-      </td>
+      <td><div class="mono" style="font-size:10px;color:var(--text-2)">ETD ${s.etd}</div><div class="${etaClass}">ETA ${s.eta}</div></td>
       <td><span class="status ${statusClass}"><span class="dot"></span>${statusLabel}</span></td>
       <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
       <td>${progress}%<div class="progress-mini"><span style="width:${progress}%"></span></div></td>
       <td class="actions-cell">
         <button class="act-btn view" onclick="openTracking('${s.id}')" title="Track"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></button>
-        <button class="act-btn edit" onclick="editShipment('${s.id}')" title="Edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
-        <button class="act-btn del" onclick="deleteShipment('${s.id}')" title="Delete"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
-      </td>
-    `;
+        <button class="act-btn edit" onclick="editShipment('${s.id}')" title="Edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/></svg></button>
+        <button class="act-btn del" onclick="deleteShipment('${s.id}')" title="Delete"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z"/></svg></button>
+      </td>`;
     tbody.appendChild(tr);
   });
 }
 
 // =================================================================
-// ============ FORM ===============================================
+// ============ FORM / CRUD ========================================
 // =================================================================
 
 function populateFormDropdowns(){
@@ -1581,104 +1568,71 @@ function populateFormDropdowns(){
   productSel.innerHTML = '<option value="">Select category...</option>';
   PRODUCTS.forEach(p=>{
     const opt = document.createElement('option');
-    opt.value = p.name;
-    opt.textContent = `${p.name} (${p.hs})`;
+    opt.value = p.name; opt.textContent = `${p.name} (${p.hs})`;
     productSel.appendChild(opt);
   });
   productSel.addEventListener('change', e=>{
     const p = PRODUCTS.find(x=>x.name===e.target.value);
     if(p) document.getElementById('f-hscode').value = p.hs + '.' + String(Math.floor(Math.random()*99)).padStart(2,'0');
   });
-
-  const modeSel = document.getElementById('f-mode');
-  modeSel.innerHTML = '';
+  const modeSel = document.getElementById('f-mode'); modeSel.innerHTML = '';
   MODES.forEach(m=>{
     const opt = document.createElement('option');
-    opt.value = m.code;
-    opt.textContent = `${m.icon} ${m.name}`;
+    opt.value = m.code; opt.textContent = `${m.icon} ${m.name}`;
     modeSel.appendChild(opt);
   });
-
-  const carrierSel = document.getElementById('f-carrier');
-  carrierSel.innerHTML = '';
+  const carrierSel = document.getElementById('f-carrier'); carrierSel.innerHTML = '';
   CARRIERS.forEach(c=>{
     const opt = document.createElement('option');
-    opt.value = c.name;
-    opt.textContent = `${c.name} — ${c.region}`;
+    opt.value = c.name; opt.textContent = `${c.name} — ${c.region}`;
     carrierSel.appendChild(opt);
   });
-
-  const contSel = document.getElementById('f-container');
-  contSel.innerHTML = '';
+  const contSel = document.getElementById('f-container'); contSel.innerHTML = '';
   CONTAINERS.forEach(c=>{
-    const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
+    const opt = document.createElement('option'); opt.value = c; opt.textContent = c;
     contSel.appendChild(opt);
   });
-
-  const incoSel = document.getElementById('f-incoterm');
-  incoSel.innerHTML = '';
+  const incoSel = document.getElementById('f-incoterm'); incoSel.innerHTML = '';
   INCOTERMS.forEach(i=>{
     const opt = document.createElement('option');
-    opt.value = i.code;
-    opt.textContent = `${i.code} — ${i.name}`;
+    opt.value = i.code; opt.textContent = `${i.code} — ${i.name}`;
     incoSel.appendChild(opt);
   });
-
-  const curSel = document.getElementById('f-currency');
-  curSel.innerHTML = '';
+  const curSel = document.getElementById('f-currency'); curSel.innerHTML = '';
   CURRENCIES.forEach(c=>{
-    const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
+    const opt = document.createElement('option'); opt.value = c; opt.textContent = c;
     curSel.appendChild(opt);
   });
   curSel.value = 'USD';
-
-  const statusSel = document.getElementById('f-status');
-  statusSel.innerHTML = '';
+  const statusSel = document.getElementById('f-status'); statusSel.innerHTML = '';
   STATUSES.forEach(s=>{
     const opt = document.createElement('option');
-    opt.value = s.code;
-    opt.textContent = `${s.icon} ${s.name}`;
+    opt.value = s.code; opt.textContent = `${s.icon} ${s.name}`;
     statusSel.appendChild(opt);
   });
-
-  const riskSel = document.getElementById('f-risk');
-  riskSel.innerHTML = '';
+  const riskSel = document.getElementById('f-risk'); riskSel.innerHTML = '';
   RISKS.forEach(r=>{
     const opt = document.createElement('option');
-    opt.value = r;
-    opt.textContent = r.charAt(0).toUpperCase()+r.slice(1)+' Risk';
+    opt.value = r; opt.textContent = r.charAt(0).toUpperCase()+r.slice(1)+' Risk';
     riskSel.appendChild(opt);
   });
-
-  // Country selectors
   ['f-origin-country','f-dest-country'].forEach(id=>{
     const sel = document.getElementById(id);
     sel.innerHTML = '<option value="">Select country...</option>';
     Object.entries(COUNTRIES).forEach(([code,c])=>{
       const opt = document.createElement('option');
-      opt.value = code;
-      opt.textContent = `${c.flag} ${c.name}`;
+      opt.value = code; opt.textContent = `${c.flag} ${c.name}`;
       sel.appendChild(opt);
     });
   });
-
-  // Filter dropdowns
   const filterMode = document.getElementById('f-filter-mode');
   MODES.forEach(m=>{
-    const opt = document.createElement('option');
-    opt.value = m.code;
-    opt.textContent = m.name;
+    const opt = document.createElement('option'); opt.value = m.code; opt.textContent = m.name;
     filterMode.appendChild(opt);
   });
   const filterStatus = document.getElementById('f-filter-status');
   STATUSES.forEach(s=>{
-    const opt = document.createElement('option');
-    opt.value = s.code;
-    opt.textContent = s.name;
+    const opt = document.createElement('option'); opt.value = s.code; opt.textContent = s.name;
     filterStatus.appendChild(opt);
   });
 }
@@ -1692,16 +1646,11 @@ function updatePorts(type){
   if(country && COUNTRIES[country]){
     COUNTRIES[country].ports.forEach(p=>{
       const opt = document.createElement('option');
-      opt.value = p.split('—')[0];
-      opt.textContent = p;
+      opt.value = p.split('—')[0]; opt.textContent = p;
       portSel.appendChild(opt);
     });
   }
 }
-
-// =================================================================
-// ============ CRUD ===============================================
-// =================================================================
 
 function handleFormSubmit(e){
   e.preventDefault();
@@ -1728,25 +1677,19 @@ function handleFormSubmit(e){
     risk: document.getElementById('f-risk').value,
     notes: document.getElementById('f-notes').value
   };
-
   data.co2 = data.mode==='sea' ? data.teus*2.8 : data.mode==='air' ? data.weight*0.003 : data.mode==='rail' ? data.teus*0.8 : data.weight*0.0001;
-
   if(id){
     const idx = shipments.findIndex(s=>s.id===id);
     if(idx>=0) shipments[idx] = {...shipments[idx], ...data};
   } else {
-    data.id = uid();
-    data.created = new Date().toISOString();
+    data.id = uid(); data.created = new Date().toISOString();
     shipments.push(data);
   }
-  save();
-  cancelEdit();
-  renderAll();
+  save(); cancelEdit(); renderAll();
 }
 
 function editShipment(id){
-  const s = shipments.find(x=>x.id===id);
-  if(!s) return;
+  const s = shipments.find(x=>x.id===id); if(!s) return;
   editingId = id;
   document.getElementById('edit-id').value = id;
   document.getElementById('f-sid').value = id;
@@ -1791,19 +1734,14 @@ function cancelEdit(){
 }
 
 function deleteShipment(id){
-  if(!confirm(`Delete shipment ${id}? This cannot be undone.`)) return;
+  if(!confirm(`Delete shipment ${id}?`)) return;
   shipments = shipments.filter(s=>s.id!==id);
-  save();
-  renderAll();
+  save(); renderAll();
 }
 
 function resetData(){
-  if(!confirm('Reset all data to initial mock dataset? All your shipments will be lost.')) return;
-  shipments = generateMockData();
-  save();
-  cancelEdit();
-  clearTableFilters();
-  renderAll();
+  if(!confirm('Reset all data to initial mock dataset?')) return;
+  shipments = generateMockData(); save(); cancelEdit(); clearTableFilters(); renderAll();
 }
 
 function clearTableFilters(){
@@ -1814,21 +1752,14 @@ function clearTableFilters(){
   renderTable();
 }
 
-// =================================================================
-// ============ TRACKING MODAL =====================================
-// =================================================================
-
 function openTracking(id){
-  const s = shipments.find(x=>x.id===id);
-  if(!s) return;
+  const s = shipments.find(x=>x.id===id); if(!s) return;
   document.getElementById('track-sid').textContent = id;
-  const orig = COUNTRIES[s.origin];
-  const dest = COUNTRIES[s.dest];
+  const orig = COUNTRIES[s.origin]; const dest = COUNTRIES[s.dest];
   const progress = shipmentProgress(s);
   const lead = daysBetween(s.etd, s.eta);
   const freightCost = toUSD(s.value*0.085, s.currency);
   const duties = toUSD(s.value*0.12, s.currency);
-  
   const events = [
     {t:'Booking Confirmed',d:`Order placed with ${s.carrier}`,meta:`${new Date(s.created).toLocaleString()} · ${s.incoterm}`,done:true},
     {t:'Cargo Pickup',d:`Goods collected from origin facility`,meta:`${orig.flag} ${orig.name}`,done:progress>5},
@@ -1839,16 +1770,11 @@ function openTracking(id){
     {t:'Customs Clearance',d:`Documentation review & duties assessment`,meta:`Estimated duties: ${fmt$(duties,s.currency)}`,done:progress>90},
     {t:'Final Delivery',d:`Cargo delivered to consignee facility`,meta:`Freight cost: ${fmt$(freightCost,s.currency)}`,done:progress>=100}
   ];
-
   document.getElementById('track-body').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
       <div style="background:var(--bg-2);padding:14px;border-radius:8px;border:1px solid var(--border)">
         <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:6px">Route</div>
-        <div style="font-size:13px;font-weight:600;color:var(--text-0);line-height:1.6">
-          ${orig.flag} ${orig.name}<br>
-          <span style="color:var(--text-3);font-size:10px">↓ ${MODES.find(m=>m.code===s.mode).icon} ${lead}d transit</span><br>
-          ${dest.flag} ${dest.name}
-        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--text-0);line-height:1.6">${orig.flag} ${orig.name}<br><span style="color:var(--text-3);font-size:10px">↓ ${MODES.find(m=>m.code===s.mode).icon} ${lead}d transit</span><br>${dest.flag} ${dest.name}</div>
       </div>
       <div style="background:var(--bg-2);padding:14px;border-radius:8px;border:1px solid var(--border)">
         <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:6px">Cargo Value</div>
@@ -1861,146 +1787,368 @@ function openTracking(id){
         <div style="font-size:10px;color:var(--text-3);margin-top:2px">CO₂e Scope 3 emissions</div>
       </div>
     </div>
-    <div style="background:var(--bg-2);padding:14px;border-radius:8px;border:1px solid var(--border);margin-bottom:20px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:11px">
-        <span class="mono">${s.originPort}</span>
-        <span style="color:var(--text-3)">Shipment Progress — ${progress}%</span>
-        <span class="mono">${s.destPort}</span>
-      </div>
-      <div style="height:8px;background:var(--bg-3);border-radius:4px;overflow:hidden;position:relative">
-        <div style="height:100%;width:${progress}%;background:linear-gradient(90deg,var(--accent),var(--success));position:relative">
-          <div style="position:absolute;right:0;top:-3px;width:14px;height:14px;border-radius:50%;background:var(--success);border:3px solid var(--bg-2);box-shadow:0 0 10px var(--success)"></div>
-        </div>
-      </div>
-    </div>
     <h4 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-2);margin-bottom:14px">Event Timeline</h4>
-    <div class="timeline">
-      ${events.map(e=>`
-        <div class="tl-item ${e.done?'done':''} ${e.active?'active':''}">
-          <div class="t">${e.t}</div>
-          <div class="d">${e.d}</div>
-          <div class="meta">${e.meta}</div>
-        </div>
-      `).join('')}
-    </div>
-    ${s.notes ? `<div style="margin-top:20px;padding:12px;background:var(--bg-2);border-radius:8px;border:1px solid var(--border);font-size:11px"><strong style="color:var(--text-2)">Remarks:</strong> ${s.notes}</div>` : ''}
-  `;
+    <div class="timeline">${events.map(e=>`<div class="tl-item ${e.done?'done':''} ${e.active?'active':''}"><div class="t">${e.t}</div><div class="d">${e.d}</div><div class="meta">${e.meta}</div></div>`).join('')}</div>`;
   document.getElementById('track-modal').classList.add('active');
 }
-
-function closeTracking(){
-  document.getElementById('track-modal').classList.remove('active');
-}
-
-// =================================================================
-// ============ EXPORT =============================================
-// =================================================================
+function closeTracking(){ document.getElementById('track-modal').classList.remove('active'); }
 
 function exportCSV(){
   const headers = ['ID','Product','HS Code','Qty','Origin','Origin Port','Destination','Dest Port','Mode','Carrier','Container','TEUs','Value','Currency','Weight','Incoterm','ETD','ETA','Status','Risk','CO2'];
-  const rows = shipments.map(s=>[
-    s.id,s.product,s.hscode,s.qty,s.origin,s.originPort,s.dest,s.destPort,s.mode,s.carrier,s.container,s.teus,s.value,s.currency,s.weight,s.incoterm,s.etd,s.eta,s.status,s.risk,s.co2.toFixed(2)
-  ]);
+  const rows = shipments.map(s=>[s.id,s.product,s.hscode,s.qty,s.origin,s.originPort,s.dest,s.destPort,s.mode,s.carrier,s.container,s.teus,s.value,s.currency,s.weight,s.incoterm,s.etd,s.eta,s.status,s.risk,s.co2.toFixed(2)]);
   const csv = [headers, ...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
   const blob = new Blob([csv],{type:'text/csv'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
+  const a = document.createElement('a'); a.href = url;
   a.download = `globalchain-shipments-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function renderAll(){
+  calcKPIs(); renderMap(); renderModalBars(); renderCarrierRanking(); renderFeed(); renderTable();
 }
 
 // =================================================================
-// ============ CHATBOT ============================================
+// ============ NVIDIA CHATBOT =====================================
 // =================================================================
 
-function toggleChat(){
-  const panel = document.getElementById('chat-panel');
-  panel.classList.toggle('active');
-  document.getElementById('chat-badge').style.display = 'none';
+const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
+
+function saveApiKey(){
+  const keyInput = document.getElementById('chat-api-key');
+  const btn = document.getElementById('chat-save-key');
+  const modelSel = document.getElementById('chat-model-select');
+  const key = keyInput.value.trim();
+  if(!key){ alert('Por favor, insira uma NVIDIA API Key válida (começa com nvapi-...)'); return; }
+  localStorage.setItem(CHAT_KEY_STORAGE, key);
+  localStorage.setItem(CHAT_MODEL_STORAGE, modelSel.value);
+  btn.textContent = '✓ Saved';
+  btn.classList.add('saved');
+  document.getElementById('chat-model-label').textContent = modelSel.value.split('/').pop();
+  setTimeout(()=>{ btn.textContent = 'Save'; btn.classList.remove('saved'); }, 2000);
+  addSystemMessage(`🔑 API Key configurada. Modelo: **${modelSel.value}**`);
 }
 
 function loadChatConfig(){
-  const raw = localStorage.getItem(CHAT_CONFIG_KEY);
-  if(raw){
+  const key = localStorage.getItem(CHAT_KEY_STORAGE);
+  const model = localStorage.getItem(CHAT_MODEL_STORAGE) || 'nvidia/llama-3.1-nemotron-ultra-251b';
+  if(key) document.getElementById('chat-api-key').value = key;
+  document.getElementById('chat-model-select').value = model;
+  document.getElementById('chat-model-label').textContent = model.split('/').pop();
+  const history = localStorage.getItem(CHAT_STORAGE);
+  if(history){
     try{
-      chatConfig = JSON.parse(raw);
-      showChatInterface();
-    }catch(e){}
+      chatHistory = JSON.parse(history);
+      chatHistory.forEach(m=>{
+        if(m.role==='user') appendMessage('user', m.content, m.time);
+        else if(m.role==='assistant') appendMessage('ai', m.content, m.time);
+      });
+      if(chatHistory.length > 0) document.getElementById('chat-empty').style.display = 'none';
+    }catch(e){ chatHistory = []; }
   }
 }
 
-function saveChatConfig(){
-  const apiKey = document.getElementById('nvidia-api-key').value.trim();
-  const model = document.getElementById('nvidia-model').value;
+function saveChatHistory(){
+  localStorage.setItem(CHAT_STORAGE, JSON.stringify(chatHistory.slice(-30)));
+}
+
+function toggleChat(){
+  const win = document.getElementById('chat-window');
+  win.classList.toggle('active');
+  if(win.classList.contains('active')){
+    document.getElementById('chat-input').focus();
+  }
+}
+
+function buildDataContext(){
+  // Gera um snapshot dos dados atuais para enviar ao LLM como contexto
+  const totalFreight = shipments.reduce((acc,s)=>acc+toUSD(s.value*0.085,s.currency),0);
+  const totalTEU = shipments.reduce((acc,s)=>acc+s.teus,0);
+  const totalCO2 = shipments.reduce((acc,s)=>acc+s.co2,0);
+  const avgLead = shipments.length ? shipments.reduce((acc,s)=>acc+daysBetween(s.etd,s.eta),0)/shipments.length : 0;
   
+  const modeCounts = {};
+  shipments.forEach(s=>modeCounts[s.mode]=(modeCounts[s.mode]||0)+1);
+  
+  const statusCounts = {};
+  shipments.forEach(s=>statusCounts[s.status]=(statusCounts[s.status]||0)+1);
+  
+  const carrierCounts = {};
+  shipments.forEach(s=>carrierCounts[s.carrier]=(carrierCounts[s.carrier]||0)+1);
+  
+  const topCarriers = Object.entries(carrierCounts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  
+  const delayed = shipments.filter(s=>s.status==='delayed');
+  const highRisk = shipments.filter(s=>s.risk==='high');
+  
+  const co2ByMode = {};
+  shipments.forEach(s=>co2ByMode[s.mode]=(co2ByMode[s.mode]||0)+s.co2);
+  
+  const routeValues = {};
+  shipments.forEach(s=>{
+    const key = `${s.origin}→${s.dest}`;
+    routeValues[key] = (routeValues[key]||0) + toUSD(s.value, s.currency);
+  });
+  const topRoutes = Object.entries(routeValues).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  
+  return `
+== CURRENT SUPPLY CHAIN DATA SNAPSHOT ==
+- Total shipments: ${shipments.length}
+- Total freight spend: $${totalFreight.toFixed(2)} USD equivalent
+- Total TEUs: ${totalTEU.toFixed(1)}
+- Avg lead time: ${avgLead.toFixed(1)} days
+- Total CO2 emissions: ${totalCO2.toFixed(2)} tons
+
+== STATUS DISTRIBUTION ==
+${Object.entries(statusCounts).map(([k,v])=>`- ${k}: ${v}`).join('\n')}
+
+== MODAL DISTRIBUTION ==
+${Object.entries(modeCounts).map(([k,v])=>`- ${k}: ${v} shipments`).join('\n')}
+
+== CO2 BY MODE (tons) ==
+${Object.entries(co2ByMode).map(([k,v])=>`- ${k}: ${v.toFixed(2)}`).join('\n')}
+
+== TOP CARRIERS (by shipment count) ==
+${topCarriers.map(([k,v])=>`- ${k}: ${v} shipments`).join('\n')}
+
+== TOP ROUTES (by cargo value USD) ==
+${topRoutes.map(([k,v])=>`- ${k}: $${v.toFixed(2)}`).join('\n')}
+
+== CRITICAL ALERTS ==
+- Delayed shipments: ${delayed.length} ${delayed.length>0?'('+delayed.slice(0,3).map(s=>s.id).join(', ')+')':''}
+- High risk shipments: ${highRisk.length} ${highRisk.length>0?'('+highRisk.slice(0,3).map(s=>s.id).join(', ')+')':''}
+
+== DELAYED SHIPMENTS DETAILS ==
+${delayed.slice(0,5).map(s=>{
+  const o = COUNTRIES[s.origin], d = COUNTRIES[s.dest];
+  return `- ${s.id}: ${o.name} (${s.originPort}) → ${d.name} (${s.destPort}) | ${s.product} | Carrier: ${s.carrier} | ETA was ${s.eta}`;
+}).join('\n')}
+`;
+}
+
+const SYSTEM_PROMPT = `You are **ChainGPT**, a senior supply chain analyst and logistics advisor assistant embedded inside the GlobalChain OS dashboard.
+
+You have real-time access to the user's live supply chain data (provided in the context below). Your role:
+1. Analyze the provided data accurately — always cite specific shipment IDs, carriers, routes, values, and KPIs.
+2. Answer in **Portuguese (Brasil)** by default unless the user writes in another language.
+3. Provide actionable insights, not just raw numbers.
+4. Use markdown formatting: **bold** for emphasis, \`code\` for IDs/numbers, lists for multiple items.
+5. When listing shipments, show: ID, route, carrier, value, and status.
+6. Be concise but thorough. Typical responses: 150-400 words.
+7. If you spot risks, delays, or anomalies, proactively highlight them.
+8. Suggest optimizations: modal shifts, carrier changes, route consolidation, customs prep.
+9. Never invent data — if something isn't in the context, say so.
+10. Use emojis sparingly and professionally (🚢 ✈️ 🚛 ⚠️ ✅ 📊).
+
+Format rules:
+- Use **bold** for emphasis
+- Use \`backticks\` for shipment IDs, HS codes, values
+- Use bullet lists with "-"
+- Use numbered lists for steps/recommendations
+- Keep paragraphs short`;
+
+async function sendMessage(){
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if(!msg || isChatBusy) return;
+  
+  const apiKey = localStorage.getItem(CHAT_KEY_STORAGE);
   if(!apiKey){
-    alert('Please enter your NVIDIA API key');
+    alert('⚠️ Configure sua NVIDIA API Key primeiro (barra superior do chat).\n\nObtenha em: https://build.nvidia.com/');
+    document.getElementById('chat-api-key').focus();
     return;
   }
   
-  chatConfig = {apiKey, model};
-  localStorage.setItem(CHAT_CONFIG_KEY, JSON.stringify(chatConfig));
-  showChatInterface();
-}
-
-function showChatInterface(){
-  document.getElementById('chat-setup').style.display = 'none';
-  document.getElementById('chat-input-area').style.display = 'block';
+  document.getElementById('chat-empty').style.display = 'none';
+  appendMessage('user', msg);
+  const time = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  chatHistory.push({role:'user', content:msg, time});
+  input.value = ''; input.style.height = 'auto';
   
-  // Load chat history
-  const historyRaw = localStorage.getItem(CHAT_HISTORY_KEY);
-  if(historyRaw){
-    try{
-      chatHistory = JSON.parse(historyRaw);
-      chatHistory.forEach(msg => addMessageToChat(msg.role, msg.content, false));
-    }catch(e){}
+  // Show typing
+  const typingEl = showTyping();
+  isChatBusy = true;
+  updateSendButton();
+  
+  try{
+    const context = buildDataContext();
+    const model = localStorage.getItem(CHAT_MODEL_STORAGE) || 'nvidia/llama-3.1-nemotron-ultra-251b';
+    
+    const messages = [
+      {role:'system', content: SYSTEM_PROMPT + '\n\n=== LIVE DATA CONTEXT ===\n' + context},
+      ...chatHistory.slice(-10).map(m=>({role:m.role, content:m.content}))
+    ];
+    
+    const response = await fetch(NVIDIA_API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: messages,
+        temperature: 0.4,
+        top_p: 0.9,
+        max_tokens: 1024,
+        stream: false
+      })
+    });
+    
+    typingEl.remove();
+    
+    if(!response.ok){
+      const errText = await response.text();
+      let errMsg = `Erro ${response.status}`;
+      if(response.status === 401) errMsg = '🔑 API Key inválida ou expirada. Verifique em build.nvidia.com';
+      else if(response.status === 429) errMsg = '⏱️ Rate limit excedido. Aguarde alguns segundos.';
+      else if(response.status === 404) errMsg = '❌ Modelo indisponível. Tente outro.';
+      else errMsg += ': ' + errText.substring(0,200);
+      appendMessage('ai', `⚠️ ${errMsg}`, null, true);
+    } else {
+      const data = await response.json();
+      const reply = data.choices?.[0]?.message?.content || 'Sem resposta.';
+      appendMessage('ai', reply);
+      chatHistory.push({role:'assistant', content:reply, time:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})});
+      saveChatHistory();
+    }
+  } catch(err){
+    typingEl.remove();
+    appendMessage('ai', `⚠️ Erro de conexão: ${err.message}\n\nVerifique sua conexão e tente novamente.`, null, true);
   }
   
-  if(chatHistory.length === 0){
-    addMessageToChat('assistant', 'Olá! Sou seu assistente de Supply Chain. Posso ajudá-lo com informações sobre embarques, rotas, transportadoras, métricas de desempenho e muito mais. O que você gostaria de saber?', false);
-  }
-  
-  // Scroll to bottom
-  const chatBody = document.getElementById('chat-body');
-  chatBody.scrollTop = chatBody.scrollHeight;
+  isChatBusy = false;
+  updateSendButton();
 }
 
-function addMessageToChat(role, content, saveToHistory = true){
-  const chatBody = document.getElementById('chat-body');
-  const msgDiv = document.createElement('div');
-  msgDiv.className = `chat-msg ${role}`;
-  
-  const avatarSvg = role === 'user'
-    ? '<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>'
-    : '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>';
-  
-  msgDiv.innerHTML = `
-    <div class="chat-msg-avatar">${avatarSvg}</div>
-    <div class="chat-msg-bubble">${formatMessage(content)}</div>
-  `;
-  
-  chatBody.appendChild(msgDiv);
-  chatBody.scrollTop = chatBody.scrollHeight;
-  
-  if(saveToHistory){
-    chatHistory.push({role, content});
-    localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory));
-  }
+function appendMessage(type, text, time, isError=false){
+  const body = document.getElementById('chat-body');
+  const msgEl = document.createElement('div');
+  msgEl.className = 'msg ' + (type==='user'?'user':'ai');
+  const avatar = type==='user' ? '👤' : '★';
+  const timeStr = time || new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const html = type==='ai' ? renderMarkdown(text) : escapeHtml(text);
+  msgEl.innerHTML = `
+    <div class="msg-avatar">${avatar}</div>
+    <div>
+      <div class="msg-bubble" ${isError?'style="border-color:var(--danger);background:rgba(239,68,68,0.1)"':''}>${html}</div>
+      <div class="msg-meta">${timeStr}</div>
+    </div>`;
+  body.appendChild(msgEl);
+  body.scrollTop = body.scrollHeight;
 }
 
-function formatMessage(text){
-  // Basic markdown-like formatting
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/`(.*?)`/g, '<code>$1</code>')
-    .replace(/\n/g, '<br>');
+function addSystemMessage(text){
+  document.getElementById('chat-empty').style.display = 'none';
+  appendMessage('ai', text);
 }
 
-function getSystemContext(){
-  const activeShipments = shipments.filter(s => s.status === 'transit' || s.status === 'customs').length;
-  const delayedShipments = shipments.filter(s => s.status === 'delayed').length;
-  const totalTEU = shipments.reduce((sum, s) => sum + s.teus, 0);
-  const
+function showTyping(){
+  const body = document.getElementById('chat-body');
+  const el = document.createElement('div');
+  el.className = 'msg ai';
+  el.id = 'typing-msg';
+  el.innerHTML = `
+    <div class="msg-avatar">★</div>
+    <div class="typing-indicator"><span></span><span></span><span></span></div>`;
+  body.appendChild(el);
+  body.scrollTop = body.scrollHeight;
+  return el;
+}
+
+function updateSendButton(){
+  const btn = document.getElementById('chat-send');
+  btn.disabled = isChatBusy;
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function renderMarkdown(text){
+  // Simple markdown: **bold**, `code`, lists, h4, line breaks
+  let html = escapeHtml(text);
+  // Code blocks (``` ... ```)
+  html = html.replace(/```([\s\S]*?)```/g, '<pre style="background:var(--bg-0);padding:8px;border-radius:4px;overflow-x:auto;font-family:\'JetBrains Mono\',monospace;font-size:11px;border:1px solid var(--border)">$1</pre>');
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Bold
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // H4
+  html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+  html = html.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+  // Lists - unordered
+  html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+  // Numbered lists
+  html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+  // Line breaks
+  html = html.replace(/\n\n/g, '</p><p>');
+  html = html.replace(/\n/g, '<br>');
+  html = '<p>' + html + '</p>';
+  html = html.replace(/<p><\/p>/g,'');
+  html = html.replace(/<p>(<h4>)/g,'$1');
+  html = html.replace(/(<\/h4>)<\/p>/g,'$1');
+  html = html.replace(/<p>(<ul>)/g,'$1');
+  html = html.replace(/(<\/ul>)<\/p>/g,'$1');
+  html = html.replace(/<p>(<pre>)/g,'$1');
+  html = html.replace(/(<\/pre>)<\/p>/g,'$1');
+  return html;
+}
+
+function clearChat(){
+  if(chatHistory.length === 0) return;
+  if(!confirm('Limpar todo o histórico da conversa?')) return;
+  chatHistory = [];
+  localStorage.removeItem(CHAT_STORAGE);
+  const body = document.getElementById('chat-body');
+  body.innerHTML = '';
+  body.appendChild(document.getElementById('chat-empty') || createEmptyState());
+  document.getElementById('chat-empty').style.display = 'flex';
+}
+
+function sendSuggestion(text){
+  document.getElementById('chat-input').value = text;
+  sendMessage();
+}
+
+// =================================================================
+// ============ INIT ===============================================
+// =================================================================
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  populateFormDropdowns();
+  load();
+  loadChatConfig();
+  renderAll();
+  document.getElementById('f-sid').value = uid();
+  document.getElementById('shipment-form').addEventListener('submit', handleFormSubmit);
+  document.getElementById('btn-cancel').addEventListener('click', cancelEdit);
+  document.getElementById('f-search').addEventListener('input', renderTable);
+  document.getElementById('f-filter-mode').addEventListener('change', renderTable);
+  document.getElementById('f-filter-status').addEventListener('change', renderTable);
+  document.getElementById('f-filter-risk').addEventListener('change', renderTable);
+  document.getElementById('track-modal').addEventListener('click', e=>{
+    if(e.target.id==='track-modal') closeTracking();
+  });
+  const today = new Date();
+  const next = new Date(); next.setDate(today.getDate()+28);
+  document.getElementById('f-etd').value = today.toISOString().slice(0,10);
+  document.getElementById('f-eta').value = next.toISOString().slice(0,10);
+  
+  // Chatbot events
+  document.getElementById('chat-fab').addEventListener('click', toggleChat);
+  document.getElementById('chat-input').addEventListener('keydown', e=>{
+    if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
+  });
+  document.getElementById('chat-input').addEventListener('input', e=>{
+    e.target.style.height = 'auto';
+    e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
+  });
+  document.getElementById('chat-model-select').addEventListener('change', e=>{
+    document.getElementById('chat-model-label').textContent = e.target.value.split('/').pop();
+  });
+});
+</script>
+</body>
+</html>
