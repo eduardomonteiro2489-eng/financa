@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlobalChain OS | Supply Chain Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-0:#0a0e1a;
+  --bg-1:#0f1524;
+  --bg-2:#151d30;
+  --bg-3:#1c2541;
+  --border:#2a3555;
+  --border-strong:#3d4a75;
+  --text-0:#f1f5f9;
+  --text-1:#cbd5e1;
+  --text-2:#94a3b8;
+  --text-3:#64748b;
+  --accent:#3b82f6;
+  --accent-2:#06b6d4;
+  --success:#10b981;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --purple:#a855f7;
+  --pink:#ec4899;
+  --gold:#eab308;
+  --shadow-lg:0 20px 40px -12px rgba(0,0,0,0.6);
+  --shadow-glow:0 0 20px rgba(59,130,246,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg-0);
+  color:var(--text-0);
+  font-size:13px;
+  line-height:1.5;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(at 20% 10%, rgba(59,130,246,0.08) 0px, transparent 50%),
+    radial-gradient(at 80% 80%, rgba(168,85,247,0.06) 0px, transparent 50%);
+  background-attachment:fixed;
+}
+.mono{font-family:'JetBrains Mono',monospace;letter-spacing:-0.02em}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg-1)}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* ====== TOP BAR ====== */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(15,21,36,0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:10px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;letter-spacing:0.02em}
+.logo-mark{
+  width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  display:grid;place-items:center;
+  box-shadow:0 0 20px rgba(59,130,246,0.4);
+}
+.logo-mark svg{width:18px;height:18px;fill:white}
+.logo span.sub{color:var(--text-3);font-weight:500;font-size:11px;margin-left:6px;text-transform:uppercase;letter-spacing:0.1em}
+.topbar-center{display:flex;gap:24px;flex:1;justify-content:center}
+.stat-pill{
+  display:flex;flex-direction:column;gap:2px;padding:4px 14px;
+  border-left:1px solid var(--border);
+}
+.stat-pill:first-child{border-left:none}
+.stat-pill .label{font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.12em;font-weight:600}
+.stat-pill .val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text-0)}
+.stat-pill .val.live{color:var(--success)}
+.stat-pill .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--success);margin-right:4px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.btn-ico{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--bg-2);border:1px solid var(--border);
+  display:grid;place-items:center;cursor:pointer;transition:all 0.2s;
+  color:var(--text-1);
+}
+.btn-ico:hover{background:var(--bg-3);border-color:var(--accent);color:var(--accent)}
+.btn-ico svg{width:16px;height:16px;fill:currentColor}
+
+/* ====== CHATBOT ====== */
+.chat-toggle{
+  position:fixed;bottom:24px;right:24px;z-index:150;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  border:none;cursor:pointer;
+  display:grid;place-items:center;
+  box-shadow:0 8px 24px rgba(59,130,246,0.4);
+  transition:all 0.3s;
+}
+.chat-toggle:hover{transform:scale(1.1);box-shadow:0 12px 32px rgba(59,130,246,0.6)}
+.chat-toggle svg{width:28px;height:28px;fill:white}
+.chat-toggle .badge{
+  position:absolute;top:-4px;right:-4px;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--danger);color:white;
+  font-size:10px;font-weight:700;
+  display:grid;place-items:center;
+  border:2px solid var(--bg-0);
+}
+
+.chat-panel{
+  position:fixed;bottom:90px;right:24px;z-index:160;
+  width:400px;height:600px;max-height:calc(100vh - 120px);
+  background:var(--bg-1);border:1px solid var(--border);
+  border-radius:16px;box-shadow:var(--shadow-lg);
+  display:none;flex-direction:column;
+  overflow:hidden;
+}
+.chat-panel.active{display:flex}
+
+.chat-header{
+  padding:16px 20px;
+  background:linear-gradient(135deg,var(--bg-2),var(--bg-1));
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.chat-header-left{display:flex;align-items:center;gap:12px}
+.chat-avatar{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  display:grid;place-items:center;
+}
+.chat-avatar svg{width:20px;height:20px;fill:white}
+.chat-title{font-size:14px;font-weight:700}
+.chat-status{font-size:10px;color:var(--success);display:flex;align-items:center;gap:4px}
+.chat-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
+
+.chat-body{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.chat-msg{
+  display:flex;gap:8px;max-width:85%;
+  animation:slideIn 0.3s ease-out;
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.chat-msg.user{align-self:flex-end;flex-direction:row-reverse}
+.chat-msg-avatar{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--bg-3);display:grid;place-items:center;
+  flex-shrink:0;
+}
+.chat-msg-avatar svg{width:14px;height:14px;fill:var(--text-2)}
+.chat-msg.user .chat-msg-avatar{background:var(--accent)}
+.chat-msg.user .chat-msg-avatar svg{fill:white}
+.chat-msg-bubble{
+  padding:10px 14px;border-radius:12px;
+  background:var(--bg-2);border:1px solid var(--border);
+  font-size:12px;line-height:1.5;
+}
+.chat-msg.user .chat-msg-bubble{
+  background:var(--accent);border-color:var(--accent);
+  color:white;
+}
+.chat-msg-bubble code{
+  background:var(--bg-3);padding:2px 6px;border-radius:4px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+.chat-msg-bubble pre{
+  background:var(--bg-3);padding:10px;border-radius:6px;
+  margin:8px 0;overflow-x:auto;
+}
+.chat-msg-bubble pre code{background:none;padding:0}
+
+.chat-input-area{
+  padding:16px;border-top:1px solid var(--border);
+  background:var(--bg-2);
+}
+.chat-input-wrap{
+  display:flex;gap:8px;align-items:flex-end;
+}
+.chat-input{
+  flex:1;background:var(--bg-1);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;
+  color:var(--text-0);font-family:'Inter',sans-serif;font-size:12px;
+  resize:none;min-height:40px;max-height:120px;
+  transition:all 0.2s;
+}
+.chat-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+.chat-send{
+  width:40px;height:40px;border-radius:10px;
+  background:var(--accent);border:none;cursor:pointer;
+  display:grid;place-items:center;transition:all 0.2s;
+  flex-shrink:0;
+}
+.chat-send:hover{background:#2563eb;transform:scale(1.05)}
+.chat-send:disabled{opacity:0.5;cursor:not-allowed}
+.chat-send svg{width:18px;height:18px;fill:white}
+
+.chat-setup{
+  padding:20px;display:flex;flex-direction:column;gap:12px;
+}
+.chat-setup h3{font-size:14px;font-weight:700;margin-bottom:8px}
+.chat-setup .field{display:flex;flex-direction:column;gap:4px}
+.chat-setup label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
+.chat-setup input,.chat-setup select{
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:6px;padding:8px 10px;color:var(--text-0);
+  font-family:'Inter',sans-serif;font-size:12px;
+}
+.chat-setup input:focus,.chat-setup select:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(59,130,246,0.15);
+}
+
+.typing-indicator{
+  display:flex;gap:4px;padding:8px 12px;
+}
+.typing-indicator span{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--text-3);animation:typing 1.4s infinite;
+}
+.typing-indicator span:nth-child(2){animation-delay:0.2s}
+.typing-indicator span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{opacity:0.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+/* ====== LAYOUT ====== */
+.main{padding:20px 24px 40px;max-width:1800px;margin:0 auto}
+.grid-kpi{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+.kpi{
+  background:linear-gradient(180deg,var(--bg-2),var(--bg-1));
+  border:1px solid var(--border);
+  border-radius:10px;padding:14px;
+  position:relative;overflow:hidden;
+  transition:all 0.3s;
+}
+.kpi:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent-2)}
+.kpi.c2::before{background:var(--success)}
+.kpi.c3::before{background:var(--warning)}
+.kpi.c4::before{background:var(--danger)}
+.kpi.c5::before{background:var(--purple)}
+.kpi.c6::before{background:var(--pink)}
+.kpi .k-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.kpi .k-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.12em;font-weight:600}
+.kpi .k-icon{width:24px;height:24px;border-radius:6px;background:var(--bg-3);display:grid;place-items:center}
+.kpi .k-icon svg{width:13px;height:13px;fill:var(--accent)}
+.kpi .k-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--text-0);line-height:1.1;margin-bottom:4px}
+.kpi .k-delta{font-size:10px;font-weight:600;display:flex;align-items:center;gap:4px}
+.kpi .k-delta.up{color:var(--success)}
+.kpi .k-delta.down{color:var(--danger)}
+.kpi .k-sub{font-size:10px;color:var(--text-3);margin-top:2px}
+
+/* ====== PANELS ====== */
+.panel{
+  background:var(--bg-1);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px;
+  margin-bottom:16px;
+}
+.panel-h{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.panel-t{font-size:13px;font-weight:700;letter-spacing:0.01em;display:flex;align-items:center;gap:8px}
+.panel-t .ico{width:20px;height:20px;border-radius:5px;background:var(--bg-3);display:grid;place-items:center}
+.panel-t .ico svg{width:11px;height:11px;fill:var(--accent)}
+.panel-tools{display:flex;gap:6px}
+.chip{
+  padding:4px 10px;border-radius:6px;background:var(--bg-2);
+  border:1px solid var(--border);font-size:10px;
+  color:var(--text-2);cursor:pointer;transition:all 0.2s;
+  font-weight:600;letter-spacing:0.04em;text-transform:uppercase;
+}
+.chip:hover,.chip.active{background:var(--accent);color:white;border-color:var(--accent)}
+
+.row-2{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+
+/* ====== WORLD MAP (SVG) ====== */
+.map-wrap{position:relative;background:var(--bg-2);border-radius:10px;padding:14px;overflow:hidden}
+.map-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(59,130,246,0.1), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(168,85,247,0.08), transparent 40%);
+  pointer-events:none;
+}
+.map-svg{width:100%;height:320px;display:block}
+.route-line{stroke:var(--accent);stroke-width:1.2;fill:none;stroke-dasharray:4 3;opacity:0.7;animation:dash 20s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-200}}
+.route-line.c2{stroke:var(--success)}
+.route-line.c3{stroke:var(--warning)}
+.route-line.c4{stroke:var(--danger)}
+.port{fill:var(--accent);filter:drop-shadow(0 0 4px rgba(59,130,246,0.8))}
+.port.c2{fill:var(--success)}
+.port.c3{fill:var(--warning)}
+.port.c4{fill:var(--danger)}
+.continent{fill:var(--bg-3);stroke:var(--border);stroke-width:0.5}
+.legend{position:absolute;bottom:10px;right:10px;display:flex;gap:10px;font-size:10px;background:rgba(15,21,36,0.85);padding:6px 10px;border-radius:6px;border:1px solid var(--border)}
+.legend-item{display:flex;align-items:center;gap:5px;color:var(--text-2)}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+
+/* ====== MODAL DISTRIBUTION ====== */
+.modal-bars{display:flex;flex-direction:column;gap:12px}
+.modal-row{display:grid;grid-template-columns:80px 1fr 70px 70px;align-items:center;gap:10px;font-size:11px}
+.modal-row .name{display:flex;align-items:center;gap:6px;color:var(--text-1);font-weight:500}
+.modal-row .bar{height:22px;background:var(--bg-2);border-radius:4px;overflow:hidden;position:relative}
+.modal-row .bar-fill{height:100%;border-radius:4px;position:relative;display:flex;align-items:center;padding:0 8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:white;font-weight:600}
+.modal-row .bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15))}
+.modal-row .pct{text-align:right;font-family:'JetBrains Mono',monospace;color:var(--text-1);font-weight:600}
+.modal-row .vol{text-align:right;font-family:'JetBrains Mono',monospace;color:var(--text-3);font-size:10px}
+
+/* ====== OTIF RING ====== */
+.otif-wrap{display:flex;gap:20px;align-items:center}
+.ring{position:relative;width:140px;height:140px;flex-shrink:0}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:10}
+.ring .bg{stroke:var(--bg-3)}
+.ring .fg{stroke-linecap:round;transition:stroke-dashoffset 1s ease-out}
+.ring .center{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+.ring .center .num{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700}
+.ring .center .lbl{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
+.otif-stats{flex:1;display:flex;flex-direction:column;gap:8px}
+.otif-stat{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border);font-size:11px}
+.otif-stat:last-child{border-bottom:none}
+.otif-stat .k{color:var(--text-2)}
+.otif-stat .v{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--text-0)}
+
+/* ====== LIVE FEED ====== */
+.feed{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;padding-right:4px}
+.feed-item{
+  display:grid;grid-template-columns:32px 1fr auto;gap:10px;
+  padding:10px;background:var(--bg-2);border-radius:8px;
+  border-left:3px solid var(--accent);
+  font-size:11px;transition:all 0.2s;
+}
+.feed-item:hover{background:var(--bg-3)}
+.feed-item.ok{border-left-color:var(--success)}
+.feed-item.warn{border-left-color:var(--warning)}
+.feed-item.err{border-left-color:var(--danger)}
+.feed-item .ic{width:32px;height:32px;border-radius:6px;background:var(--bg-3);display:grid;place-items:center}
+.feed-item .ic svg{width:15px;height:15px;fill:var(--accent)}
+.feed-item.ok .ic svg{fill:var(--success)}
+.feed-item.warn .ic svg{fill:var(--warning)}
+.feed-item.err .ic svg{fill:var(--danger)}
+.feed-item .main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.feed-item .title{color:var(--text-0);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feed-item .desc{color:var(--text-2);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feed-item .time{color:var(--text-3);font-family:'JetBrains Mono',monospace;font-size:10px;align-self:flex-start;margin-top:2px}
+
+/* ====== CARRIER RANKING ====== */
+.carrier-list{display:flex;flex-direction:column;gap:6px}
+.carrier{
+  display:grid;grid-template-columns:30px 1fr 80px 60px 50px;
+  align-items:center;gap:10px;padding:8px 10px;
+  background:var(--bg-2);border-radius:6px;font-size:11px;
+  transition:all 0.2s;
+}
+.carrier:hover{background:var(--bg-3)}
+.carrier .rank{
+  width:24px;height:24px;border-radius:6px;
+  background:var(--bg-3);display:grid;place-items:center;
+  font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text-1);font-size:11px;
+}
+.carrier.top .rank{background:linear-gradient(135deg,var(--gold),#ca8a04);color:white}
+.carrier .name{font-weight:600;color:var(--text-0)}
+.carrier .name small{display:block;color:var(--text-3);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;margin-top:1px}
+.carrier .teu{font-family:'JetBrains Mono',monospace;color:var(--text-2);font-size:11px}
+.carrier .score{font-family:'JetBrains Mono',monospace;color:var(--success);font-weight:600}
+.carrier .trend{font-family:'JetBrains Mono',monospace;font-size:10px}
+.carrier .trend.up{color:var(--success)}
+.carrier .trend.down{color:var(--danger)}
+
+/* ====== FORM ====== */
+.form-wrap{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+.form-wrap .full{grid-column:span 4}
+.form-wrap .half{grid-column:span 2}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
+.field input,.field select,.field textarea{
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:6px;padding:8px 10px;color:var(--text-0);
+  font-family:'Inter',sans-serif;font-size:12px;
+  transition:all 0.2s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(59,130,246,0.15);
+}
+.field select{cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;padding-right:30px}
+.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;padding-top:14px;border-top:1px solid var(--border)}
+.btn{
+  padding:8px 16px;border-radius:6px;border:none;
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;
+  cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;
+  font-family:'Inter',sans-serif;
+}
+.btn-p{background:var(--accent);color:white}
+.btn-p:hover{background:#2563eb;box-shadow:0 0 15px rgba(59,130,246,0.4)}
+.btn-s{background:var(--bg-2);color:var(--text-1);border:1px solid var(--border)}
+.btn-s:hover{background:var(--bg-3);color:var(--text-0)}
+.btn-d{background:var(--danger);color:white}
+.btn-d:hover{background:#dc2626}
+.btn-w{background:var(--warning);color:#1a1a1a}
+
+/* ====== TABLE ====== */
+.tbl-wrap{background:var(--bg-1);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.tbl-head{
+  padding:14px 18px;display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(180deg,var(--bg-2),var(--bg-1));
+  border-bottom:1px solid var(--border);
+  flex-wrap:wrap;gap:12px;
+}
+.tbl-head .title{font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+.tbl-head .count{
+  background:var(--accent);color:white;
+  padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;
+  font-family:'JetBrains Mono',monospace;
+}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters input,.filters select{
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:6px;padding:6px 10px;color:var(--text-0);font-size:11px;
+  font-family:'Inter',sans-serif;
+}
+.filters input{width:180px}
+.tbl-scroll{overflow-x:auto;max-height:600px;overflow-y:auto}
+table.data{width:100%;border-collapse:collapse;font-size:11px;min-width:1400px}
+table.data th{
+  position:sticky;top:0;z-index:5;
+  background:var(--bg-2);padding:10px 12px;text-align:left;
+  font-size:9px;text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--text-3);font-weight:700;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+table.data td{
+  padding:10px 12px;border-bottom:1px solid var(--border);
+  color:var(--text-1);vertical-align:middle;
+}
+table.data tr{transition:background 0.15s}
+table.data tbody tr:hover{background:var(--bg-2)}
+.sid{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--accent);font-size:11px}
+.route-cell{display:flex;align-items:center;gap:4px;font-weight:500}
+.route-cell .arrow{color:var(--text-3);font-size:10px}
+.country-flag{font-size:14px;margin-right:4px}
+.tag{
+  display:inline-block;padding:2px 7px;border-radius:4px;
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+}
+.tag-sea{background:rgba(59,130,246,0.15);color:var(--accent)}
+.tag-air{background:rgba(168,85,247,0.15);color:var(--purple)}
+.tag-road{background:rgba(245,158,11,0.15);color:var(--warning)}
+.tag-rail{background:rgba(16,185,129,0.15);color:var(--success)}
+.status{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;border-radius:10px;
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;
+}
+.status .dot{width:6px;height:6px;border-radius:50%}
+.s-transit{background:rgba(59,130,246,0.15);color:var(--accent)}
+.s-transit .dot{background:var(--accent);animation:pulse 1.5s infinite}
+.s-customs{background:rgba(245,158,11,0.15);color:var(--warning)}
+.s-customs .dot{background:var(--warning)}
+.s-delivered{background:rgba(16,185,129,0.15);color:var(--success)}
+.s-delivered .dot{background:var(--success)}
+.s-delayed{background:rgba(239,68,68,0.15);color:var(--danger)}
+.s-delayed .dot{background:var(--danger)}
+.s-pending{background:rgba(148,163,184,0.15);color:var(--text-2)}
+.s-pending .dot{background:var(--text-2)}
+.val{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--text-0)}
+.cur{color:var(--text-3);font-size:9px;margin-right:2px;font-weight:500}
+.eta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-2)}
+.eta.late{color:var(--danger);font-weight:600}
+.eta.early{color:var(--success)}
+.progress-mini{width:80px;height:4px;background:var(--bg-3);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:6px}
+.progress-mini span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.risk-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:4px}
+.risk-low{background:rgba(16,185,129,0.15);color:var(--success)}
+.risk-med{background:rgba(245,158,11,0.15);color:var(--warning)}
+.risk-high{background:rgba(239,68,68,0.15);color:var(--danger)}
+.actions-cell{display:flex;gap:4px}
+.act-btn{
+  width:24px;height:24px;border-radius:4px;
+  background:var(--bg-2);border:1px solid var(--border);
+  display:grid;place-items:center;cursor:pointer;transition:all 0.15s;
+}
+.act-btn:hover{background:var(--bg-3)}
+.act-btn svg{width:12px;height:12px;fill:var(--text-2)}
+.act-btn.del:hover{background:rgba(239,68,68,0.2);border-color:var(--danger)}
+.act-btn.del:hover svg{fill:var(--danger)}
+.act-btn.edit:hover{background:rgba(59,130,246,0.2);border-color:var(--accent)}
+.act-btn.edit:hover svg{fill:var(--accent)}
+.act-btn.view:hover{background:rgba(168,85,247,0.2);border-color:var(--purple)}
+.act-btn.view:hover svg{fill:var(--purple)}
+
+/* ====== MODAL ====== */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(4px);z-index:200;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.active{display:flex}
+.modal{
+  background:var(--bg-1);border:1px solid var(--border);
+  border-radius:12px;width:100%;max-width:900px;max-height:90vh;overflow-y:auto;
+  box-shadow:var(--shadow-lg);
+}
+.modal-h{
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--bg-2);position:sticky;top:0;z-index:2;
+}
+.modal-h h3{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.modal-b{padding:20px}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--border)}
+.tl-item{position:relative;padding-bottom:16px}
+.tl-item::before{
+  content:'';position:absolute;left:-20px;top:4px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--bg-2);border:2px solid var(--accent);
+}
+.tl-item.done::before{background:var(--success);border-color:var(--success)}
+.tl-item.active::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(59,130,246,0.2)}
+.tl-item .t{font-weight:600;font-size:12px;color:var(--text-0);margin-bottom:2px}
+.tl-item .d{font-size:11px;color:var(--text-2)}
+.tl-item .meta{font-size:10px;color:var(--text-3);font-family:'JetBrains Mono',monospace;margin-top:2px}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width:1400px){.grid-kpi{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:1100px){.row-2,.row-3{grid-template-columns:1fr}}
+@media (max-width:800px){
+  .topbar-center{display:none}
+  .form-wrap{grid-template-columns:1fr}
+  .form-wrap .half,.form-wrap .full{grid-column:span 1}
+  .grid-kpi{grid-template-columns:repeat(2,1fr)}
+  .panel{padding:14px}
+  .main{padding:12px}
+  .chat-panel{width:calc(100vw - 48px);right:24px;left:24px}
+}
+
+.empty{text-align:center;padding:40px;color:var(--text-3);font-size:12px}
+.pulse-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite;margin-right:4px}
+</style>
+</head>
+<body>
+
+<!-- ====== TOP BAR ====== -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3l7.5 3.7L12 11.7 4.5 8 12 4.3zM4 9.6l7 3.5v7.3l-7-3.5V9.6zm9 10.8v-7.3l7-3.5v7.3l-7 3.5z"/></svg>
+    </div>
+    GlobalChain OS <span class="sub">Supply Chain Intelligence</span>
+  </div>
+  <div class="topbar-center">
+    <div class="stat-pill"><span class="label">Active Shipments</span><span class="val live" id="pill-active">—</span></div>
+    <div class="stat-pill"><span class="label">In Transit</span><span class="val" id="pill-transit">—</span></div>
+    <div class="stat-pill"><span class="label">Alerts</span><span class="val" id="pill-alerts" style="color:var(--warning)">—</span></div>
+    <div class="stat-pill"><span class="label">System Status</span><span class="val live"><span class="pulse-dot"></span>OPERATIONAL</span></div>
+  </div>
+  <div class="topbar-right">
+    <button class="btn-ico" title="Export CSV" onclick="exportCSV()"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></button>
+    <button class="btn-ico" title="Refresh" onclick="renderAll()"><svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
+    <button class="btn-ico" title="Reset to Mock Data" onclick="resetData()"><svg viewBox="0 0 24 24"><path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6a5.92 5.92 0 01-4.22-1.78L6.23 17.78A7.958 7.958 0 0012 20c4.42 0 8-3.58 8-8h3l-4-4zM5 6v8h10V6H5z"/></svg></button>
+  </div>
+</div>
+
+<!-- ====== MAIN ====== -->
+<div class="main">
+
+  <!-- KPIs -->
+  <div class="grid-kpi">
+    <div class="kpi">
+      <div class="k-head">
+        <span class="k-label">Total Freight Spend</span>
+        <div class="k-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L10 14v1c0 1.1.9 2 2 2v1.93z"/></svg></div>
+      </div>
+      <div class="k-val mono" id="k-freight">—</div>
+      <div class="k-delta up" id="k-freight-delta">↑ +8.4% vs last quarter</div>
+      <div class="k-sub">All currencies (USD equiv.)</div>
+    </div>
+    <div class="kpi c2">
+      <div class="k-head">
+        <span class="k-label">Active TEUs</span>
+        <div class="k-icon" style="background:rgba(16,185,129,0.15)"><svg viewBox="0 0 24 24" style="fill:var(--success)"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm12 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
+      </div>
+      <div class="k-val mono" id="k-teu">—</div>
+      <div class="k-delta up" id="k-teu-delta">↑ +12.1% MoM</div>
+      <div class="k-sub">Twenty-foot Equivalent Units</div>
+    </div>
+    <div class="kpi c3">
+      <div class="k-head">
+        <span class="k-label">Avg Lead Time</span>
+        <div class="k-icon" style="background:rgba(245,158,11,0.15)"><svg viewBox="0 0 24 24" style="fill:var(--warning)"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"/></svg></div>
+      </div>
+      <div class="k-val mono" id="k-lead">—</div>
+      <div class="k-delta down" id="k-lead-delta">↓ -2.3d improvement</div>
+      <div class="k-sub">Origin to destination</div>
+    </div>
+    <div class="kpi c4">
+      <div class="k-head">
+        <span class="k-label">OTIF Score</span>
+        <div class="k-icon" style="background:rgba(239,68,68,0.15)"><svg viewBox="0 0 24 24" style="fill:var(--danger)"><path d="M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 10h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg></div>
+      </div>
+      <div class="k-val mono" id="k-otif">—</div>
+      <div class="k-delta up" id="k-otif-delta">↑ On Time In Full</div>
+      <div class="k-sub">Target: 95%+</div>
+    </div>
+    <div class="kpi c5">
+      <div class="k-head">
+        <span class="k-label">CO₂ Emissions</span>
+        <div class="k-icon" style="background:rgba(168,85,247,0.15)"><svg viewBox="0 0 24 24" style="fill:var(--purple)"><path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></div>
+      </div>
+      <div class="k-val mono" id="k-co2">—</div>
+      <div class="k-delta down" id="k-co2-delta">↓ -5.2% YoY (Scope 3)</div>
+      <div class="k-sub">Metric tons CO₂e</div>
+    </div>
+    <div class="kpi c6">
+      <div class="k-head">
+        <span class="k-label">Cost per TEU</span>
+        <div class="k-icon" style="background:rgba(236,72,153,0.15)"><svg viewBox="0 0 24 24" style="fill:var(--pink)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
+      </div>
+      <div class="k-val mono" id="k-cpteu">—</div>
+      <div class="k-delta up">→ Stable</div>
+      <div class="k-sub">USD / TEU average</div>
+    </div>
+  </div>
+
+  <!-- Row 2: World Map + OTIF -->
+  <div class="row-2">
+    <div class="panel">
+      <div class="panel-h">
+        <div class="panel-t">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L10 14v1c0 1.1.9 2 2 2v1.93z"/></svg></span>
+          Global Trade Routes
+        </div>
+        <div class="panel-tools">
+          <span class="chip active">All Routes</span>
+          <span class="chip">Asia-Pacific</span>
+          <span class="chip">Transatlantic</span>
+          <span class="chip">Intra-LATAM</span>
+        </div>
+      </div>
+      <div class="map-wrap">
+        <svg class="map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
+          <!-- Simplified world map polygons -->
+          <g class="continents">
+            <!-- North America -->
+            <path class="continent" d="M 120 120 L 220 100 L 280 140 L 260 220 L 200 240 L 160 220 L 130 180 Z"/>
+            <!-- South America -->
+            <path class="continent" d="M 260 280 L 320 270 L 340 350 L 310 420 L 280 400 L 260 340 Z"/>
+            <!-- Europe -->
+            <path class="continent" d="M 460 120 L 540 110 L 560 150 L 520 180 L 470 170 Z"/>
+            <!-- Africa -->
+            <path class="continent" d="M 500 200 L 560 200 L 580 280 L 550 360 L 510 340 L 500 270 Z"/>
+            <!-- Asia -->
+            <path class="continent" d="M 580 100 L 780 110 L 820 180 L 760 230 L 660 220 L 600 180 Z"/>
+            <!-- Oceania -->
+            <path class="continent" d="M 800 340 L 880 330 L 900 380 L 840 400 L 810 380 Z"/>
+          </g>
+          <!-- Routes will be added dynamically -->
+          <g id="routes-layer"></g>
+          <g id="ports-layer"></g>
+        </svg>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>Maritime</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Active</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>Delayed</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--danger)"></span>Critical</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h">
+        <div class="panel-t">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></span>
+          OTIF Performance
+        </div>
+      </div>
+      <div class="otif-wrap">
+        <div class="ring">
+          <svg viewBox="0 0 100 100">
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle class="fg" id="otif-ring" cx="50" cy="50" r="42" stroke="var(--success)" stroke-dasharray="263.89" stroke-dashoffset="263.89"></circle>
+          </svg>
+          <div class="center">
+            <div class="num mono" id="otif-val">0%</div>
+            <div class="lbl">OTIF</div>
+          </div>
+        </div>
+        <div class="otif-stats">
+          <div class="otif-stat"><span class="k">On Time</span><span class="v mono" id="otif-ontime">—</span></div>
+          <div class="otif-stat"><span class="k">Early Delivery</span><span class="v mono" id="otif-early">—</span></div>
+          <div class="otif-stat"><span class="k">Late Delivery</span><span class="v mono" id="otif-late">—</span></div>
+          <div class="otif-stat"><span class="k">In Full</span><span class="v mono" id="otif-full">—</span></div>
+          <div class="otif-stat"><span class="k">SLA Breaches (30d)</span><span class="v mono" id="otif-breach">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Modal + Carrier Ranking + Live Feed -->
+  <div class="row-3">
+    <div class="panel">
+      <div class="panel-h">
+        <div class="panel-t">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg></span>
+          Modal Distribution
+        </div>
+      </div>
+      <div class="modal-bars" id="modal-bars"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h">
+        <div class="panel-t">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg></span>
+          Carrier Performance
+        </div>
+        <span class="chip">Top 5</span>
+      </div>
+      <div class="carrier-list" id="carrier-list"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h">
+        <div class="panel-t">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></span>
+          Live Operations Feed
+        </div>
+        <span class="chip"><span class="pulse-dot"></span>LIVE</span>
+      </div>
+      <div class="feed" id="live-feed"></div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="panel">
+    <div class="panel-h">
+      <div class="panel-t">
+        <span class="ico"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></span>
+        <span id="form-title">New Shipment</span>
+      </div>
+      <div class="panel-tools">
+        <span class="chip active">Standard</span>
+        <span class="chip">Hazardous</span>
+        <span class="chip">Cold Chain</span>
+      </div>
+    </div>
+    <form id="shipment-form">
+      <input type="hidden" id="edit-id">
+      <div class="form-wrap">
+        <div class="field">
+          <label>Shipment ID (auto)</label>
+          <input type="text" id="f-sid" readonly placeholder="GCH-2026-...">
+        </div>
+        <div class="field">
+          <label>Product Category</label>
+          <select id="f-product" required></select>
+        </div>
+        <div class="field">
+          <label>HS Code (Tariff)</label>
+          <input type="text" id="f-hscode" placeholder="8471.30.12" maxlength="12">
+        </div>
+        <div class="field">
+          <label>Quantity</label>
+          <input type="number" id="f-qty" min="1" required placeholder="100">
+        </div>
+
+        <div class="field">
+          <label>Origin Country</label>
+          <select id="f-origin-country" required onchange="updatePorts('origin')"></select>
+        </div>
+        <div class="field">
+          <label>Origin Port / Hub</label>
+          <select id="f-origin-port" required></select>
+        </div>
+        <div class="field">
+          <label>Destination Country</label>
+          <select id="f-dest-country" required onchange="updatePorts('dest')"></select>
+        </div>
+        <div class="field">
+          <label>Destination Port / Hub</label>
+          <select id="f-dest-port" required></select>
+        </div>
+
+        <div class="field">
+          <label>Transport Mode</label>
+          <select id="f-mode" required></select>
+        </div>
+        <div class="field">
+          <label>Carrier</label>
+          <select id="f-carrier" required></select>
+        </div>
+        <div class="field">
+          <label>Container Type</label>
+          <select id="f-container"></select>
+        </div>
+        <div class="field">
+          <label>TEUs</label>
+          <input type="number" id="f-teus" step="0.5" min="0" value="1">
+        </div>
+
+        <div class="field">
+          <label>Incoterm (ICC 2020)</label>
+          <select id="f-incoterm" required></select>
+        </div>
+        <div class="field">
+          <label>Cargo Value</label>
+          <input type="number" id="f-value" step="0.01" min="0" required placeholder="50000">
+        </div>
+        <div class="field">
+          <label>Currency</label>
+          <select id="f-currency" required></select>
+        </div>
+        <div class="field">
+          <label>Weight (kg)</label>
+          <input type="number" id="f-weight" min="0" placeholder="18500">
+        </div>
+
+        <div class="field">
+          <label>ETD (Origin)</label>
+          <input type="date" id="f-etd" required>
+        </div>
+        <div class="field">
+          <label>ETA (Destination)</label>
+          <input type="date" id="f-eta" required>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="f-status" required></select>
+        </div>
+        <div class="field">
+          <label>Risk Level</label>
+          <select id="f-risk"></select>
+        </div>
+
+        <div class="field full">
+          <label>Documentation / Remarks</label>
+          <textarea id="f-notes" rows="2" placeholder="B/L, Commercial Invoice, Packing List, Phyto Certificate..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-s" id="btn-cancel" style="display:none">Cancel</button>
+        <button type="reset" class="btn btn-s">Clear</button>
+        <button type="submit" class="btn btn-p" id="btn-submit">Create Shipment</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Table -->
+  <div class="tbl-wrap">
+    <div class="tbl-head">
+      <div class="title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        Shipment Registry
+        <span class="count" id="tbl-count">0</span>
+      </div>
+      <div class="filters">
+        <input type="text" id="f-search" placeholder="🔍 Search ID, product, carrier...">
+        <select id="f-filter-mode"><option value="">All Modes</option></select>
+        <select id="f-filter-status"><option value="">All Statuses</option></select>
+        <select id="f-filter-risk"><option value="">All Risks</option><option value="low">Low Risk</option><option value="medium">Medium Risk</option><option value="high">High Risk</option></select>
+        <button class="btn btn-s" onclick="clearTableFilters()">Clear</button>
+      </div>
+    </div>
+    <div class="tbl-scroll">
+      <table class="data">
+        <thead>
+          <tr>
+            <th>Shipment ID</th>
+            <th>Product / HS Code</th>
+            <th>Route (Origin → Dest)</th>
+            <th>Mode</th>
+            <th>Carrier</th>
+            <th>Incoterm</th>
+            <th>TEUs / Weight</th>
+            <th>Cargo Value</th>
+            <th>ETD / ETA</th>
+            <th>Status</th>
+            <th>Risk</th>
+            <th>Progress</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Tracking Modal -->
+<div class="modal-bg" id="track-modal">
+  <div class="modal">
+    <div class="modal-h">
+      <h3>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+        Shipment Tracking — <span id="track-sid" class="mono" style="color:var(--accent)"></span>
+      </h3>
+      <button class="btn-ico" onclick="closeTracking()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+    </div>
+    <div class="modal-b" id="track-body"></div>
+  </div>
+</div>
+
+<!-- ====== CHATBOT ====== -->
+<button class="chat-toggle" id="chat-toggle" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+  <span class="badge" id="chat-badge" style="display:none">1</span>
+</button>
+
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div class="chat-avatar">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      </div>
+      <div>
+        <div class="chat-title">Supply Chain Assistant</div>
+        <div class="chat-status">Powered by NVIDIA NIM</div>
+      </div>
+    </div>
+    <button class="btn-ico" onclick="toggleChat()" style="width:28px;height:28px">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+  </div>
+  
+  <div class="chat-body" id="chat-body">
+    <div class="chat-setup" id="chat-setup">
+      <h3>🔑 Configure NVIDIA API</h3>
+      <div class="field">
+        <label>API Key</label>
+        <input type="password" id="nvidia-api-key" placeholder="nvapi-xxxxxxxxxxxxxxxx">
+      </div>
+      <div class="field">
+        <label>Model</label>
+        <select id="nvidia-model">
+          <option value="meta/llama-3.1-70b-instruct">Llama 3.1 70B Instruct</option>
+          <option value="meta/llama-3.1-405b-instruct">Llama 3.1 405B Instruct</option>
+          <option value="nvidia/llama-3.1-nemotron-70b-instruct">Nemotron 70B Instruct</option>
+          <option value="google/gemma-2-27b-it">Gemma 2 27B</option>
+          <option value="mistralai/mixtral-8x7b-instruct-v0.1">Mixtral 8x7B</option>
+        </select>
+      </div>
+      <button class="btn btn-p" onclick="saveChatConfig()" style="width:100%;justify-content:center;margin-top:8px">
+        Save Configuration
+      </button>
+      <div style="font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.6">
+        💡 Get your API key at <a href="https://build.nvidia.com" target="_blank" style="color:var(--accent);text-decoration:none">build.nvidia.com</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="chat-input-area" id="chat-input-area" style="display:none">
+    <div class="chat-input-wrap">
+      <textarea class="chat-input" id="chat-input" placeholder="Ask about shipments, routes, carriers..." rows="1"></textarea>
+      <button class="chat-send" id="chat-send" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =================================================================
+// ============ GLOBAL SUPPLY CHAIN OS — CORE DATA ================
+// =================================================================
+
+const STORAGE_KEY = 'globalchain_os_v1';
+const CHAT_CONFIG_KEY = 'globalchain_chat_config';
+const CHAT_HISTORY_KEY = 'globalchain_chat_history';
+
+// ----- Reference Data -----
+const COUNTRIES = {
+  'CN':{name:'China',flag:'🇨🇳',ports:['CNSHA — Shanghai','CNNGB — Ningbo','CNSHE — Shekou','CNYTN — Yantian','CNTAO — Qingdao']},
+  'VN':{name:'Vietnam',flag:'🇻🇳',ports:['VNSGN — Ho Chi Minh','VNHPH — Haiphong']},
+  'KR':{name:'South Korea',flag:'🇰🇷',ports:['KRPUS — Busan','KRINC — Incheon']},
+  'JP':{name:'Japan',flag:'🇯🇵',ports:['JPTYO — Tokyo','JPOSA — Osaka','JPYOK — Yokohama']},
+  'SG':{name:'Singapore',flag:'🇸🇬',ports:['SGSIN — Singapore']},
+  'IN':{name:'India',flag:'🇮🇳',ports:['INNSA — Nhava Sheva','INMAA — Chennai']},
+  'AE':{name:'UAE',flag:'🇦🇪',ports:['AEJEA — Jebel Ali']},
+  'DE':{name:'Germany',flag:'🇩🇪',ports:['DEHAM — Hamburg','DEBRV — Bremerhaven']},
+  'NL':{name:'Netherlands',flag:'🇳🇱',ports:['NLRTM — Rotterdam']},
+  'BE':{name:'Belgium',flag:'🇧🇪',ports:['BEANR — Antwerp']},
+  'GB':{name:'United Kingdom',flag:'🇬🇧',ports:['GBFXT — Felixstowe','GBLGP — London Gateway']},
+  'US':{name:'United States',flag:'🇺🇸',ports:['USLAX — Los Angeles','USLGB — Long Beach','USNYC — New York','USSAV — Savannah','USCHI — Chicago']},
+  'CA':{name:'Canada',flag:'🇨🇦',ports:['CAVRN — Vancouver','CATOR — Toronto']},
+  'MX':{name:'Mexico',flag:'🇲🇽',ports:['MXZLO — Manzanillo','MXVER — Veracruz']},
+  'BR':{name:'Brazil',flag:'🇧🇷',ports:['BRSSZ — Santos','BRRIO — Rio de Janeiro','BRPOA — Porto Alegre','BRFOR — Fortaleza']},
+  'AR':{name:'Argentina',flag:'🇦🇷',ports:['ARBUE — Buenos Aires']},
+  'CL':{name:'Chile',flag:'🇨🇱',ports:['CLSAI — San Antonio','CLVAP — Valparaíso']},
+  'ZA':{name:'South Africa',flag:'🇿🇦',ports:['ZACPT — Cape Town','ZADUR — Durban']},
+  'AU':{name:'Australia',flag:'🇦🇺',ports:['AUSYD — Sydney','AUMEL — Melbourne']},
+  'TR':{name:'Turkey',flag:'🇹🇷',ports:['TRIST — Istanbul','TRALI — Aliaga']}
+};
+
+const MODES = [
+  {code:'sea',name:'Ocean Freight (FCL)',icon:'🚢'},
+  {code:'air',name:'Air Freight',icon:'✈️'},
+  {code:'road',name:'Road Freight (FTL)',icon:'🚛'},
+  {code:'rail',name:'Rail Freight',icon:'🚆'}
+];
+
+const CARRIERS = [
+  {name:'Maersk',type:'Global Ocean Carrier',region:'Copenhagen'},
+  {name:'MSC',type:'Global Ocean Carrier',region:'Geneva'},
+  {name:'CMA CGM',type:'Global Ocean Carrier',region:'Marseille'},
+  {name:'Hapag-Lloyd',type:'Global Ocean Carrier',region:'Hamburg'},
+  {name:'COSCO Shipping',type:'Global Ocean Carrier',region:'Shanghai'},
+  {name:'Evergreen',type:'Global Ocean Carrier',region:'Taipei'},
+  {name:'FedEx Express',type:'Air & Express',region:'Memphis'},
+  {name:'DHL Global Forwarding',type:'Air & Logistics',region:'Bonn'},
+  {name:'Kuehne+Nagel',type:'Freight Forwarder',region:'Schindellegi'},
+  {name:'DB Schenker',type:'Freight Forwarder',region:'Essen'},
+  {name:'J.B. Hunt',type:'Intermodal / Road',region:'Arkansas'},
+  {name:'América Latina Logística',type:'Regional LATAM',region:'Curitiba'}
+];
+
+const CONTAINERS = ['20\' Dry Van','40\' Dry Van','40\' High Cube','45\' High Cube','20\' Reefer','40\' Reefer','20\' Open Top','40\' Flat Rack','Tank Container','LCL (Less than Container)'];
+
+const INCOTERMS = [
+  {code:'EXW',name:'Ex Works'},
+  {code:'FCA',name:'Free Carrier'},
+  {code:'FAS',name:'Free Alongside Ship'},
+  {code:'FOB',name:'Free On Board'},
+  {code:'CFR',name:'Cost and Freight'},
+  {code:'CIF',name:'Cost, Insurance & Freight'},
+  {code:'CPT',name:'Carriage Paid To'},
+  {code:'CIP',name:'Carriage and Insurance Paid To'},
+  {code:'DAP',name:'Delivered at Place'},
+  {code:'DPU',name:'Delivered at Place Unloaded'},
+  {code:'DDP',name:'Delivered Duty Paid'}
+];
+
+const CURRENCIES = ['USD','EUR','BRL','CNY','GBP','JPY'];
+
+const PRODUCTS = [
+  {name:'Consumer Electronics',hs:'8471.30'},
+  {name:'Semiconductors & ICs',hs:'8542.31'},
+  {name:'Automotive Parts',hs:'8708.99'},
+  {name:'Textile & Apparel',hs:'6109.10'},
+  {name:'Pharmaceuticals',hs:'3004.90'},
+  {name:'Machinery & Equipment',hs:'8428.90'},
+  {name:'Chemicals (Bulk)',hs:'2806.10'},
+  {name:'Agricultural Commodities',hs:'1001.99'},
+  {name:'Frozen Foodstuffs',hs:'0303.89'},
+  {name:'Medical Devices',hs:'9018.90'},
+  {name:'Industrial Metals',hs:'7601.10'},
+  {name:'Solar Panels',hs:'8541.40'}
+];
+
+const STATUSES = [
+  {code:'pending',name:'Pending Pickup',icon:'⏳'},
+  {code:'transit',name:'In Transit',icon:'🚢'},
+  {code:'customs',name:'Customs Clearance',icon:'📋'},
+  {code:'delivered',name:'Delivered',icon:'✅'},
+  {code:'delayed',name:'Delayed',icon:'⚠️'}
+];
+
+const RISKS = ['low','medium','high'];
+
+// Port coordinates (approximate SVG coords on 1000x500 map)
+const PORT_COORDS = {
+  'CNSHA':[755,170],'CNNGB':[765,180],'CNSHE':[750,185],'CNTAO':[745,160],
+  'VNSGN':[720,215],'VNHPH':[715,200],
+  'KRPUS':[790,150],'KRINC':[785,145],
+  'JPTYO':[820,155],'JPOSA':[810,160],
+  'SGSIN':[715,260],
+  'INNSA':[635,215],'INMAA':[645,230],
+  'AEJEA':[580,210],
+  'DEHAM':[510,125],'DEBRV':[505,130],
+  'NLRTM':[500,135],
+  'BEANR':[500,140],
+  'GBFXT':[480,130],'GBLGP':[485,135],
+  'USLAX':[145,180],'USLGB':[148,185],'USNYC':[235,155],'USSAV':[220,175],'USCHI':[215,160],
+  'CAVRN':[140,125],'CATOR':[225,140],
+  'MXZLO':[175,215],'MXVER':[185,220],
+  'BRSSZ':[295,330],'BRRIO':[305,325],'BRPOA':[290,355],'BRFOR':[330,295],
+  'ARBUE':[285,395],
+  'CLSAI':[260,395],'CLVAP':[255,390],
+  'ZACPT':[515,370],'ZADUR':[540,345],
+  'AUSYD':[875,370],'AUMEL':[865,385],
+  'TRIST':[555,160],'TRALI':[550,165]
+};
+
+// =================================================================
+// ============ STATE MANAGEMENT ===================================
+// =================================================================
+
+let shipments = [];
+let editingId = null;
+let chatConfig = null;
+let chatHistory = [];
+
+function uid(){
+  const year = new Date().getFullYear();
+  const count = shipments.length + 1;
+  return `GCH-${year}-${String(count).padStart(4,'0')}`;
+}
+
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(shipments));
+}
+
+function load(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{ shipments = JSON.parse(raw); return; }catch(e){}
+  }
+  shipments = generateMockData();
+  save();
+}
+
+function generateMockData(){
+  const routes = [
+    {o:'CN',op:'CNSHA',d:'BR',dp:'BRSSZ',m:'sea',pr:'Consumer Electronics',val:285000,cur:'USD',teu:4,w:76000},
+    {o:'CN',op:'CNNGB',d:'US',dp:'USLAX',m:'sea',pr:'Semiconductors & ICs',val:1450000,cur:'USD',teu:2,w:12000},
+    {o:'VN',op:'VNSGN',d:'DE',dp:'DEHAM',m:'sea',pr:'Textile & Apparel',val:185000,cur:'USD',teu:3,w:48000},
+    {o:'KR',op:'KRPUS',d:'NL',dp:'NLRTM',m:'sea',pr:'Consumer Electronics',val:520000,cur:'USD',teu:5,w:65000},
+    {o:'SG',op:'SGSIN',d:'AU',dp:'AUSYD',m:'sea',pr:'Machinery & Equipment',val:340000,cur:'USD',teu:2,w:95000},
+    {o:'IN',op:'INNSA',d:'GB',dp:'GBFXT',m:'sea',pr:'Pharmaceuticals',val:215000,cur:'USD',teu:1,w:18000},
+    {o:'CN',op:'CNYTN',d:'US',dp:'USNYC',m:'sea',pr:'Consumer Electronics',val:680000,cur:'USD',teu:6,w:108000},
+    {o:'AE',op:'AEJEA',d:'ZA',dp:'ZADUR',m:'sea',pr:'Chemicals (Bulk)',val:165000,cur:'USD',teu:2,w:42000},
+    {o:'DE',op:'DEHAM',d:'BR',dp:'BRSSZ',m:'sea',pr:'Machinery & Equipment',val:425000,cur:'EUR',teu:3,w:58000},
+    {o:'US',op:'USLAX',d:'JP',dp:'JPTYO',m:'sea',pr:'Agricultural Commodities',val:295000,cur:'USD',teu:8,w:185000},
+    {o:'BR',op:'BRSSZ',d:'CN',dp:'CNSHA',m:'sea',pr:'Agricultural Commodities',val:585000,cur:'USD',teu:10,w:245000},
+    {o:'BR',op:'BRFOR',d:'NL',dp:'NLRTM',m:'sea',pr:'Frozen Foodstuffs',val:142000,cur:'USD',teu:2,w:38000},
+    {o:'CL',op:'CLSAI',d:'CN',dp:'CNYTN',m:'sea',pr:'Industrial Metals',val:375000,cur:'USD',teu:4,w:92000},
+    {o:'CN',op:'CNTAO',d:'CA',dp:'CAVRN',m:'sea',pr:'Solar Panels',val:415000,cur:'USD',teu:3,w:52000},
+    {o:'TR',op:'TRIST',d:'US',dp:'USNYC',m:'sea',pr:'Textile & Apparel',val:128000,cur:'USD',teu:2,w:32000},
+    {o:'CN',op:'CNSHA',d:'MX',dp:'MXZLO',m:'sea',pr:'Automotive Parts',val:265000,cur:'USD',teu:3,w:54000},
+    {o:'CN',op:'CNNGB',d:'AR',dp:'ARBUE',m:'sea',pr:'Consumer Electronics',val:195000,cur:'USD',teu:2,w:28000},
+    {o:'IN',op:'INMAA',d:'US',dp:'USSAV',m:'sea',pr:'Pharmaceuticals',val:385000,cur:'USD',teu:1,w:15000},
+    {o:'CN',op:'CNYTN',d:'AU',dp:'AUMEL',m:'sea',pr:'Consumer Electronics',val:325000,cur:'USD',teu:3,w:45000},
+    {o:'KR',op:'KRPUS',d:'US',dp:'USLGB',m:'sea',pr:'Automotive Parts',val:780000,cur:'USD',teu:6,w:95000},
+    {o:'CN',op:'CNSHA',d:'DE',dp:'DEHAM',m:'air',pr:'Semiconductors & ICs',val:2150000,cur:'USD',teu:0,w:4500},
+    {o:'DE',op:'DEHAM',d:'US',dp:'USNYC',m:'air',pr:'Medical Devices',val:685000,cur:'EUR',teu:0,w:2800},
+    {o:'CN',op:'CNSHA',d:'BR',dp:'BRSSZ',m:'air',pr:'Medical Devices',val:425000,cur:'USD',teu:0,w:3200},
+    {o:'US',op:'USLAX',d:'BR',dp:'BRRIO',m:'air',pr:'Semiconductors & ICs',val:890000,cur:'USD',teu:0,w:5800},
+    {o:'CN',op:'CNNGB',d:'DE',dp:'DEBRV',m:'rail',pr:'Consumer Electronics',val:295000,cur:'USD',teu:2,w:38000},
+    {o:'CN',op:'CNTAO',d:'NL',dp:'NLRTM',m:'rail',pr:'Machinery & Equipment',val:185000,cur:'USD',teu:2,w:42000},
+    {o:'US',op:'USCHI',d:'MX',dp:'MXVER',m:'road',pr:'Automotive Parts',val:125000,cur:'USD',teu:1,w:22000},
+    {o:'BR',op:'BRSSZ',d:'AR',dp:'ARBUE',m:'road',pr:'Frozen Foodstuffs',val:68000,cur:'USD',teu:1,w:18000},
+    {o:'DE',op:'DEHAM',d:'BE',dp:'BEANR',m:'road',pr:'Chemicals (Bulk)',val:95000,cur:'EUR',teu:1,w:24000},
+    {o:'US',op:'USLAX',d:'CA',dp:'CAVRN',m:'road',pr:'Consumer Electronics',val:145000,cur:'USD',teu:1,w:15000}
+  ];
+
+  const data = [];
+  const today = new Date();
+  
+  routes.forEach((r,i)=>{
+    const leadTime = r.m==='air'?Math.floor(Math.random()*5)+5 : r.m==='rail'?Math.floor(Math.random()*10)+18 : r.m==='road'?Math.floor(Math.random()*5)+3 : Math.floor(Math.random()*20)+22;
+    const etdOffset = Math.floor(Math.random()*20)-10;
+    const etd = new Date(today); etd.setDate(etd.getDate()+etdOffset);
+    const eta = new Date(etd); eta.setDate(eta.getDate()+leadTime);
+
+    let status;
+    if(etd > today){
+      status = 'pending';
+    } else if(eta < today){
+      status = Math.random()<0.85 ? 'delivered' : 'delayed';
+    } else {
+      const prog = (today-etd)/(eta-etd);
+      if(prog < 0.6) status = 'transit';
+      else if(prog < 0.9) status = Math.random()<0.7 ? 'transit' : 'customs';
+      else status = Math.random()<0.3 ? 'delayed' : 'customs';
+    }
+
+    const carrier = CARRIERS[Math.floor(Math.random()*CARRIERS.length)].name;
+    const incoterm = INCOTERMS[Math.floor(Math.random()*INCOTERMS.length)].code;
+    const container = r.m==='sea' ? CONTAINERS[Math.floor(Math.random()*6)] : (r.m==='air' ? 'Air Cargo Pallet' : r.m==='rail' ? 'Rail Container' : 'Trailer 53\'');
+    const risk = Math.random() < 0.6 ? 'low' : (Math.random() < 0.7 ? 'medium' : 'high');
+    const product = PRODUCTS.find(p=>p.name===r.pr) || PRODUCTS[0];
+
+    data.push({
+      id: `GCH-${today.getFullYear()}-${String(i+1).padStart(4,'0')}`,
+      product: r.pr,
+      hscode: product.hs + '.' + String(Math.floor(Math.random()*99)).padStart(2,'0'),
+      qty: Math.floor(Math.random()*5000)+100,
+      origin: r.o,
+      originPort: r.op,
+      dest: r.d,
+      destPort: r.dp,
+      mode: r.m,
+      carrier,
+      container,
+      teus: r.teu,
+      value: r.val,
+      currency: r.cur,
+      weight: r.w,
+      incoterm,
+      etd: etd.toISOString().slice(0,10),
+      eta: eta.toISOString().slice(0,10),
+      status,
+      risk,
+      co2: r.m==='sea' ? r.teu*2.8 : r.m==='air' ? r.w*0.003 : r.m==='rail' ? r.teu*0.8 : r.w*0.0001,
+      notes: 'Standard documentation. B/L issued. Commercial invoice attached.',
+      created: new Date(Date.now()-Math.random()*30*86400000).toISOString()
+    });
+  });
+  return data;
+}
+
+// =================================================================
+// ============ UTILITY FUNCTIONS ==================================
+// =================================================================
+
+function fmt$(v,cur='USD'){
+  const symbols = {USD:'$',EUR:'€',BRL:'R$',CNY:'¥',GBP:'£',JPY:'¥'};
+  const sym = symbols[cur] || cur+' ';
+  if(v >= 1e6) return sym + (v/1e6).toFixed(2)+'M';
+  if(v >= 1e3) return sym + (v/1e3).toFixed(2)+'K';
+  return sym + v.toFixed(2);
+}
+
+function fmtN(v,d=1){return Number(v).toLocaleString('en-US',{maximumFractionDigits:d})}
+
+function toUSD(v,cur){
+  const rates = {USD:1, EUR:1.08, BRL:0.18, CNY:0.14, GBP:1.27, JPY:0.0067};
+  return v * (rates[cur]||1);
+}
+
+function daysBetween(a,b){
+  return Math.round((new Date(b)-new Date(a))/86400000);
+}
+
+function shipmentProgress(s){
+  const today = new Date();
+  const etd = new Date(s.etd);
+  const eta = new Date(s.eta);
+  if(today < etd) return 0;
+  if(today > eta) return s.status==='delivered' ? 100 : 95;
+  return Math.min(99, Math.round((today-etd)/(eta-etd)*100));
+}
+
+// =================================================================
+// ============ KPI CALCULATIONS ===================================
+// =================================================================
+
+function calcKPIs(){
+  let totalFreight = 0, totalTEU = 0, totalCO2 = 0, totalLead = 0;
+  let onTime = 0, late = 0, early = 0, inFull = 0, delivered = 0;
+  
+  shipments.forEach(s=>{
+    totalFreight += toUSD(s.value*0.085, s.currency); // ~8.5% freight cost
+    totalTEU += s.teus;
+    totalCO2 += s.co2;
+    const lead = daysBetween(s.etd, s.eta);
+    totalLead += lead;
+    
+    if(s.status==='delivered'){
+      delivered++;
+      const realDays = daysBetween(s.etd, new Date());
+      const planned = daysBetween(s.etd, s.eta);
+      if(realDays <= planned) onTime++;
+      if(realDays < planned-2) early++;
+      else if(realDays > planned) late++;
+      if(Math.random()<0.92) inFull++;
+    }
+  });
+
+  const avgLead = shipments.length ? totalLead/shipments.length : 0;
+  const otif = delivered ? Math.round(((onTime+early)/delivered)*100) : 0;
+  const costPerTEU = totalTEU ? totalFreight/totalTEU : 0;
+
+  document.getElementById('k-freight').textContent = fmt$(totalFreight,'USD');
+  document.getElementById('k-teu').textContent = fmtN(totalTEU,0)+' TEU';
+  document.getElementById('k-lead').textContent = avgLead.toFixed(1)+' days';
+  document.getElementById('k-otif').textContent = otif+'%';
+  document.getElementById('k-co2').textContent = fmtN(totalCO2,1)+' t';
+  document.getElementById('k-cpteu').textContent = fmt$(costPerTEU,'USD');
+
+  // OTIF ring
+  const ring = document.getElementById('otif-ring');
+  const circ = 2 * Math.PI * 42;
+  ring.setAttribute('stroke-dasharray', circ);
+  ring.setAttribute('stroke-dashoffset', circ - (circ*otif/100));
+  ring.setAttribute('stroke', otif>=90?'var(--success)':otif>=75?'var(--warning)':'var(--danger)');
+  document.getElementById('otif-val').textContent = otif+'%';
+  document.getElementById('otif-ontime').textContent = onTime;
+  document.getElementById('otif-early').textContent = early;
+  document.getElementById('otif-late').textContent = late;
+  document.getElementById('otif-full').textContent = delivered ? Math.round((inFull/delivered)*100)+'%' : '—';
+  document.getElementById('otif-breach').textContent = late;
+
+  // Top bar
+  document.getElementById('pill-active').textContent = shipments.filter(s=>s.status==='transit'||s.status==='customs').length;
+  document.getElementById('pill-transit').textContent = shipments.filter(s=>s.status==='transit').length;
+  document.getElementById('pill-alerts').textContent = shipments.filter(s=>s.status==='delayed'||s.risk==='high').length;
+}
+
+// =================================================================
+// ============ MAP RENDERING ======================================
+// =================================================================
+
+function renderMap(){
+  const routesLayer = document.getElementById('routes-layer');
+  const portsLayer = document.getElementById('ports-layer');
+  routesLayer.innerHTML = '';
+  portsLayer.innerHTML = '';
+
+  // Active routes (only show transit/customs)
+  const active = shipments.filter(s=>s.status==='transit'||s.status==='customs'||s.status==='delayed');
+  const portSet = new Set();
+  
+  active.forEach((s,idx)=>{
+    const c1 = PORT_COORDS[s.originPort];
+    const c2 = PORT_COORDS[s.destPort];
+    if(!c1 || !c2) return;
+    
+    let cls = 'route-line';
+    if(s.status==='transit') cls += ' c2';
+    else if(s.status==='delayed') cls += ' c4';
+    else if(s.status==='customs') cls += ' c3';
+    
+    const mid = [(c1[0]+c2[0])/2, Math.min(c1[1],c2[1])-40];
+    const path = `M ${c1[0]} ${c1[1]} Q ${mid[0]} ${mid[1]} ${c2[0]} ${c2[1]}`;
+    
+    const el = document.createElementNS('http://www.w3.org/2000/svg','path');
+    el.setAttribute('d', path);
+    el.setAttribute('class', cls);
+    el.setAttribute('style', `animation-delay:${idx*0.3}s`);
+    routesLayer.appendChild(el);
+
+    portSet.add(s.originPort);
+    portSet.add(s.destPort);
+  });
+
+  // Also show ports from all shipments (just the dots)
+  const allPorts = new Set();
+  shipments.forEach(s=>{allPorts.add(s.originPort); allPorts.add(s.destPort)});
+  
+  allPorts.forEach(p=>{
+    const c = PORT_COORDS[p];
+    if(!c) return;
+    const isActive = portSet.has(p);
+    const el = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    el.setAttribute('cx', c[0]);
+    el.setAttribute('cy', c[1]);
+    el.setAttribute('r', isActive ? 4 : 2.5);
+    el.setAttribute('class', 'port' + (isActive ? ' c2' : ''));
+    if(isActive) el.setAttribute('style','animation:pulse 2s infinite');
+    portsLayer.appendChild(el);
+  });
+}
+
+// =================================================================
+// ============ MODAL DISTRIBUTION =================================
+// =================================================================
+
+function renderModalBars(){
+  const counts = {};
+  shipments.forEach(s=>counts[s.mode]=(counts[s.mode]||0)+1);
+  const total = shipments.length || 1;
+  
+  const colors = {sea:'var(--accent)',air:'var(--purple)',road:'var(--warning)',rail:'var(--success)'};
+  const icons = {sea:'🚢',air:'✈️',road:'🚛',rail:'🚆'};
+  
+  const el = document.getElementById('modal-bars');
+  el.innerHTML = '';
+  
+  MODES.forEach(m=>{
+    const count = counts[m.code] || 0;
+    const pct = (count/total*100);
+    const row = document.createElement('div');
+    row.className = 'modal-row';
+    row.innerHTML = `
+      <div class="name">${icons[m.code]} ${m.name.split(' ')[0]}</div>
+      <div class="bar">
+        <div class="bar-fill" style="width:${pct}%;background:${colors[m.code]}">${count}</div>
+      </div>
+      <div class="pct">${pct.toFixed(1)}%</div>
+      <div class="vol">${count} shipments</div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+// =================================================================
+// ============ CARRIER RANKING ====================================
+// =================================================================
+
+function renderCarrierRanking(){
+  const counts = {};
+  shipments.forEach(s=>{
+    if(!counts[s.carrier]) counts[s.carrier]={shipments:0,teu:0,onTime:0};
+    counts[s.carrier].shipments++;
+    counts[s.carrier].teu += s.teus;
+    if(s.status==='delivered') counts[s.carrier].onTime++;
+  });
+  
+  const arr = Object.entries(counts).map(([name,d])=>{
+    const score = d.shipments ? Math.round((d.onTime + d.shipments*0.5) / d.shipments * 100) : 0;
+    return {name, ...d, score};
+  }).sort((a,b)=>b.score-a.score).slice(0,5);
+  
+  const el = document.getElementById('carrier-list');
+  el.innerHTML = '';
+  arr.forEach((c,i)=>{
+    const carrierMeta = CARRIERS.find(x=>x.name===c.name);
+    const trend = Math.random()<0.7 ? 'up' : 'down';
+    const trendVal = (Math.random()*8+1).toFixed(1);
+    const row = document.createElement('div');
+    row.className = 'carrier' + (i===0?' top':'');
+    row.innerHTML = `
+      <div class="rank">${i+1}</div>
+      <div class="name">${c.name}<small>${carrierMeta?.type||'Carrier'}</small></div>
+      <div class="teu">${c.teu.toFixed(1)} TEU</div>
+      <div class="score">${c.score}%</div>
+      <div class="trend ${trend}">${trend==='up'?'▲':'▼'} ${trendVal}%</div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+// =================================================================
+// ============ LIVE FEED ==========================================
+// =================================================================
+
+function renderFeed(){
+  const el = document.getElementById('live-feed');
+  el.innerHTML = '';
+  
+  const events = [];
+  shipments.forEach(s=>{
+    const origC = COUNTRIES[s.origin];
+    const destC = COUNTRIES[s.dest];
+    let type='ok', title='', desc='';
+    const progress = shipmentProgress(s);
+    
+    if(s.status==='transit'){
+      type='ok';
+      title=`${s.id} in transit`;
+      desc=`${origC.flag} ${origC.ports.find(p=>p.startsWith(s.originPort))?.split('—')[1]||s.originPort} → ${destC.flag} ${destC.ports.find(p=>p.startsWith(s.destPort))?.split('—')[1]||s.destPort} — ${progress}% complete`;
+    } else if(s.status==='customs'){
+      type='warn';
+      title=`${s.id} in customs`;
+      desc=`Awaiting clearance at ${destC.flag} ${destC.ports.find(p=>p.startsWith(s.destPort))?.split('—')[1]||s.destPort}`;
+    } else if(s.status==='delayed'){
+      type='err';
+      title=`${s.id} delayed`;
+      desc=`SLA breach detected — ${destC.flag} route`;
+    } else if(s.status==='delivered'){
+      type='ok';
+      title=`${s.id} delivered`;
+      desc=`Successfully received at ${destC.flag} destination`;
+    } else {
+      type='ok';
+      title=`${s.id} booked`;
+      desc=`Awaiting pickup from ${origC.flag} ${origC.ports.find(p=>p.startsWith(s.originPort))?.split('—')[1]||s.originPort}`;
+    }
+    
+    const minsAgo = Math.floor(Math.random()*180);
+    events.push({type,title,desc,minsAgo,sid:s.id});
+  });
+  
+  events.sort((a,b)=>a.minsAgo-b.minsAgo);
+  events.slice(0,8).forEach(ev=>{
+    const it = document.createElement('div');
+    it.className = 'feed-item '+ev.type;
+    const timeStr = ev.minsAgo<60 ? `${ev.minsAgo}m ago` : `${Math.floor(ev.minsAgo/60)}h ago`;
+    const icoSvg = ev.type==='err'
+      ? '<svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 15h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>'
+      : ev.type==='warn'
+      ? '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>'
+      : '<svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg>';
+    it.innerHTML = `
+      <div class="ic">${icoSvg}</div>
+      <div class="main">
+        <div class="title">${ev.title}</div>
+        <div class="desc">${ev.desc}</div>
+      </div>
+      <div class="time mono">${timeStr}</div>
+    `;
+    el.appendChild(it);
+  });
+}
+
+// =================================================================
+// ============ TABLE ==============================================
+// =================================================================
+
+function renderTable(){
+  const tbody = document.getElementById('tbl-body');
+  tbody.innerHTML = '';
+  
+  const search = (document.getElementById('f-search').value||'').toLowerCase();
+  const fMode = document.getElementById('f-filter-mode').value;
+  const fStatus = document.getElementById('f-filter-status').value;
+  const fRisk = document.getElementById('f-filter-risk').value;
+  
+  let filtered = shipments.filter(s=>{
+    if(search && !(s.id.toLowerCase().includes(search) || s.product.toLowerCase().includes(search) || s.carrier.toLowerCase().includes(search))) return false;
+    if(fMode && s.mode!==fMode) return false;
+    if(fStatus && s.status!==fStatus) return false;
+    if(fRisk && s.risk!==fRisk) return false;
+    return true;
+  }).sort((a,b)=>new Date(b.created)-new Date(a.created));
+  
+  document.getElementById('tbl-count').textContent = filtered.length;
+  
+  if(filtered.length===0){
+    tbody.innerHTML = '<tr><td colspan="13" class="empty">No shipments match your filters</td></tr>';
+    return;
+  }
+  
+  filtered.forEach(s=>{
+    const orig = COUNTRIES[s.origin];
+    const dest = COUNTRIES[s.dest];
+    const origPort = orig.ports.find(p=>p.startsWith(s.originPort))?.split('—')[1] || s.originPort;
+    const destPort = dest.ports.find(p=>p.startsWith(s.destPort))?.split('—')[1] || s.destPort;
+    const progress = shipmentProgress(s);
+    const today = new Date();
+    const eta = new Date(s.eta);
+    let etaClass = 'eta';
+    if(s.status!=='delivered' && eta < today) etaClass += ' late';
+    else if(s.status==='delivered' && eta > today) etaClass += ' early';
+    
+    const modeTag = {sea:'tag-sea',air:'tag-air',road:'tag-road',rail:'tag-rail'}[s.mode];
+    const modeLabel = {sea:'SEA',air:'AIR',road:'ROAD',rail:'RAIL'}[s.mode];
+    const statusClass = {pending:'s-pending',transit:'s-transit',customs:'s-customs',delivered:'s-delivered',delayed:'s-delayed'}[s.status];
+    const statusLabel = STATUSES.find(x=>x.code===s.status)?.name || s.status;
+    const riskClass = {low:'risk-low',medium:'risk-med',high:'risk-high'}[s.risk];
+    const riskLabel = {low:'LOW',medium:'MED',high:'HIGH'}[s.risk];
+    
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="sid">${s.id}</span></td>
+      <td>
+        <div style="font-weight:600;color:var(--text-0)">${s.product}</div>
+        <div class="mono" style="font-size:9px;color:var(--text-3)">${s.hscode} · Qty ${fmtN(s.qty,0)}</div>
+      </td>
+      <td>
+        <div class="route-cell">
+          <span class="country-flag">${orig.flag}</span>${origPort}
+          <span class="arrow">→</span>
+          <span class="country-flag">${dest.flag}</span>${destPort}
+        </div>
+        <div class="mono" style="font-size:9px;color:var(--text-3);margin-top:2px">${s.originPort} → ${s.destPort}</div>
+      </td>
+      <td><span class="tag ${modeTag}">${modeLabel}</span></td>
+      <td style="font-weight:500;color:var(--text-0)">${s.carrier}</td>
+      <td><span class="mono" style="color:var(--gold);font-weight:600">${s.incoterm}</span></td>
+      <td class="mono">${s.teus} TEU · ${fmtN(s.weight,0)}kg</td>
+      <td><span class="cur">${s.currency}</span><span class="val">${fmt$(s.value,s.currency)}</span></td>
+      <td>
+        <div class="mono" style="font-size:10px;color:var(--text-2)">ETD ${s.etd}</div>
+        <div class="${etaClass}">ETA ${s.eta}</div>
+      </td>
+      <td><span class="status ${statusClass}"><span class="dot"></span>${statusLabel}</span></td>
+      <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
+      <td>${progress}%<div class="progress-mini"><span style="width:${progress}%"></span></div></td>
+      <td class="actions-cell">
+        <button class="act-btn view" onclick="openTracking('${s.id}')" title="Track"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg></button>
+        <button class="act-btn edit" onclick="editShipment('${s.id}')" title="Edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+        <button class="act-btn del" onclick="deleteShipment('${s.id}')" title="Delete"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// =================================================================
+// ============ FORM ===============================================
+// =================================================================
+
+function populateFormDropdowns(){
+  const productSel = document.getElementById('f-product');
+  productSel.innerHTML = '<option value="">Select category...</option>';
+  PRODUCTS.forEach(p=>{
+    const opt = document.createElement('option');
+    opt.value = p.name;
+    opt.textContent = `${p.name} (${p.hs})`;
+    productSel.appendChild(opt);
+  });
+  productSel.addEventListener('change', e=>{
+    const p = PRODUCTS.find(x=>x.name===e.target.value);
+    if(p) document.getElementById('f-hscode').value = p.hs + '.' + String(Math.floor(Math.random()*99)).padStart(2,'0');
+  });
+
+  const modeSel = document.getElementById('f-mode');
+  modeSel.innerHTML = '';
+  MODES.forEach(m=>{
+    const opt = document.createElement('option');
+    opt.value = m.code;
+    opt.textContent = `${m.icon} ${m.name}`;
+    modeSel.appendChild(opt);
+  });
+
+  const carrierSel = document.getElementById('f-carrier');
+  carrierSel.innerHTML = '';
+  CARRIERS.forEach(c=>{
+    const opt = document.createElement('option');
+    opt.value = c.name;
+    opt.textContent = `${c.name} — ${c.region}`;
+    carrierSel.appendChild(opt);
+  });
+
+  const contSel = document.getElementById('f-container');
+  contSel.innerHTML = '';
+  CONTAINERS.forEach(c=>{
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    contSel.appendChild(opt);
+  });
+
+  const incoSel = document.getElementById('f-incoterm');
+  incoSel.innerHTML = '';
+  INCOTERMS.forEach(i=>{
+    const opt = document.createElement('option');
+    opt.value = i.code;
+    opt.textContent = `${i.code} — ${i.name}`;
+    incoSel.appendChild(opt);
+  });
+
+  const curSel = document.getElementById('f-currency');
+  curSel.innerHTML = '';
+  CURRENCIES.forEach(c=>{
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    curSel.appendChild(opt);
+  });
+  curSel.value = 'USD';
+
+  const statusSel = document.getElementById('f-status');
+  statusSel.innerHTML = '';
+  STATUSES.forEach(s=>{
+    const opt = document.createElement('option');
+    opt.value = s.code;
+    opt.textContent = `${s.icon} ${s.name}`;
+    statusSel.appendChild(opt);
+  });
+
+  const riskSel = document.getElementById('f-risk');
+  riskSel.innerHTML = '';
+  RISKS.forEach(r=>{
+    const opt = document.createElement('option');
+    opt.value = r;
+    opt.textContent = r.charAt(0).toUpperCase()+r.slice(1)+' Risk';
+    riskSel.appendChild(opt);
+  });
+
+  // Country selectors
+  ['f-origin-country','f-dest-country'].forEach(id=>{
+    const sel = document.getElementById(id);
+    sel.innerHTML = '<option value="">Select country...</option>';
+    Object.entries(COUNTRIES).forEach(([code,c])=>{
+      const opt = document.createElement('option');
+      opt.value = code;
+      opt.textContent = `${c.flag} ${c.name}`;
+      sel.appendChild(opt);
+    });
+  });
+
+  // Filter dropdowns
+  const filterMode = document.getElementById('f-filter-mode');
+  MODES.forEach(m=>{
+    const opt = document.createElement('option');
+    opt.value = m.code;
+    opt.textContent = m.name;
+    filterMode.appendChild(opt);
+  });
+  const filterStatus = document.getElementById('f-filter-status');
+  STATUSES.forEach(s=>{
+    const opt = document.createElement('option');
+    opt.value = s.code;
+    opt.textContent = s.name;
+    filterStatus.appendChild(opt);
+  });
+}
+
+function updatePorts(type){
+  const countryId = type==='origin' ? 'f-origin-country' : 'f-dest-country';
+  const portId = type==='origin' ? 'f-origin-port' : 'f-dest-port';
+  const country = document.getElementById(countryId).value;
+  const portSel = document.getElementById(portId);
+  portSel.innerHTML = '<option value="">Select port/hub...</option>';
+  if(country && COUNTRIES[country]){
+    COUNTRIES[country].ports.forEach(p=>{
+      const opt = document.createElement('option');
+      opt.value = p.split('—')[0];
+      opt.textContent = p;
+      portSel.appendChild(opt);
+    });
+  }
+}
+
+// =================================================================
+// ============ CRUD ===============================================
+// =================================================================
+
+function handleFormSubmit(e){
+  e.preventDefault();
+  const id = document.getElementById('edit-id').value;
+  const data = {
+    product: document.getElementById('f-product').value,
+    hscode: document.getElementById('f-hscode').value,
+    qty: parseInt(document.getElementById('f-qty').value),
+    origin: document.getElementById('f-origin-country').value,
+    originPort: document.getElementById('f-origin-port').value,
+    dest: document.getElementById('f-dest-country').value,
+    destPort: document.getElementById('f-dest-port').value,
+    mode: document.getElementById('f-mode').value,
+    carrier: document.getElementById('f-carrier').value,
+    container: document.getElementById('f-container').value,
+    teus: parseFloat(document.getElementById('f-teus').value)||0,
+    value: parseFloat(document.getElementById('f-value').value),
+    currency: document.getElementById('f-currency').value,
+    weight: parseFloat(document.getElementById('f-weight').value)||0,
+    incoterm: document.getElementById('f-incoterm').value,
+    etd: document.getElementById('f-etd').value,
+    eta: document.getElementById('f-eta').value,
+    status: document.getElementById('f-status').value,
+    risk: document.getElementById('f-risk').value,
+    notes: document.getElementById('f-notes').value
+  };
+
+  data.co2 = data.mode==='sea' ? data.teus*2.8 : data.mode==='air' ? data.weight*0.003 : data.mode==='rail' ? data.teus*0.8 : data.weight*0.0001;
+
+  if(id){
+    const idx = shipments.findIndex(s=>s.id===id);
+    if(idx>=0) shipments[idx] = {...shipments[idx], ...data};
+  } else {
+    data.id = uid();
+    data.created = new Date().toISOString();
+    shipments.push(data);
+  }
+  save();
+  cancelEdit();
+  renderAll();
+}
+
+function editShipment(id){
+  const s = shipments.find(x=>x.id===id);
+  if(!s) return;
+  editingId = id;
+  document.getElementById('edit-id').value = id;
+  document.getElementById('f-sid').value = id;
+  document.getElementById('f-product').value = s.product;
+  document.getElementById('f-hscode').value = s.hscode;
+  document.getElementById('f-qty').value = s.qty;
+  document.getElementById('f-origin-country').value = s.origin;
+  updatePorts('origin');
+  document.getElementById('f-origin-port').value = s.originPort;
+  document.getElementById('f-dest-country').value = s.dest;
+  updatePorts('dest');
+  document.getElementById('f-dest-port').value = s.destPort;
+  document.getElementById('f-mode').value = s.mode;
+  document.getElementById('f-carrier').value = s.carrier;
+  document.getElementById('f-container').value = s.container;
+  document.getElementById('f-teus').value = s.teus;
+  document.getElementById('f-value').value = s.value;
+  document.getElementById('f-currency').value = s.currency;
+  document.getElementById('f-weight').value = s.weight;
+  document.getElementById('f-incoterm').value = s.incoterm;
+  document.getElementById('f-etd').value = s.etd;
+  document.getElementById('f-eta').value = s.eta;
+  document.getElementById('f-status').value = s.status;
+  document.getElementById('f-risk').value = s.risk;
+  document.getElementById('f-notes').value = s.notes || '';
+  document.getElementById('form-title').textContent = 'Edit Shipment — '+id;
+  document.getElementById('btn-submit').textContent = 'Update Shipment';
+  document.getElementById('btn-cancel').style.display = 'inline-flex';
+  window.scrollTo({top:document.querySelector('form').offsetTop-80, behavior:'smooth'});
+}
+
+function cancelEdit(){
+  editingId = null;
+  document.getElementById('shipment-form').reset();
+  document.getElementById('edit-id').value = '';
+  document.getElementById('f-sid').value = uid();
+  document.getElementById('form-title').textContent = 'New Shipment';
+  document.getElementById('btn-submit').textContent = 'Create Shipment';
+  document.getElementById('btn-cancel').style.display = 'none';
+  document.getElementById('f-origin-port').innerHTML = '<option value="">Select port/hub...</option>';
+  document.getElementById('f-dest-port').innerHTML = '<option value="">Select port/hub...</option>';
+}
+
+function deleteShipment(id){
+  if(!confirm(`Delete shipment ${id}? This cannot be undone.`)) return;
+  shipments = shipments.filter(s=>s.id!==id);
+  save();
+  renderAll();
+}
+
+function resetData(){
+  if(!confirm('Reset all data to initial mock dataset? All your shipments will be lost.')) return;
+  shipments = generateMockData();
+  save();
+  cancelEdit();
+  clearTableFilters();
+  renderAll();
+}
+
+function clearTableFilters(){
+  document.getElementById('f-search').value = '';
+  document.getElementById('f-filter-mode').value = '';
+  document.getElementById('f-filter-status').value = '';
+  document.getElementById('f-filter-risk').value = '';
+  renderTable();
+}
+
+// =================================================================
+// ============ TRACKING MODAL =====================================
+// =================================================================
+
+function openTracking(id){
+  const s = shipments.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('track-sid').textContent = id;
+  const orig = COUNTRIES[s.origin];
+  const dest = COUNTRIES[s.dest];
+  const progress = shipmentProgress(s);
+  const lead = daysBetween(s.etd, s.eta);
+  const freightCost = toUSD(s.value*0.085, s.currency);
+  const duties = toUSD(s.value*0.12, s.currency);
+  
+  const events = [
+    {t:'Booking Confirmed',d:`Order placed with ${s.carrier}`,meta:`${new Date(s.created).toLocaleString()} · ${s.incoterm}`,done:true},
+    {t:'Cargo Pickup',d:`Goods collected from origin facility`,meta:`${orig.flag} ${orig.name}`,done:progress>5},
+    {t:'Port of Loading',d:`Container gated-in at ${orig.ports.find(p=>p.startsWith(s.originPort))?.split('—')[1]||s.originPort}`,meta:`Container: ${s.container} · ${s.teus} TEU`,done:progress>15},
+    {t:'Vessel / Aircraft Departure',d:`${MODES.find(m=>m.code===s.mode).name} departed origin`,meta:`ETD: ${s.etd}`,done:progress>25},
+    {t:'In Transit',d:`Cargo en route to destination`,meta:`ETA: ${s.eta} · Lead time: ${lead} days`,done:progress>40, active:progress>=40 && progress<85},
+    {t:'Port of Discharge',d:`Arrived at ${dest.ports.find(p=>p.startsWith(s.destPort))?.split('—')[1]||s.destPort}`,meta:`${dest.flag} ${dest.name}`,done:progress>85},
+    {t:'Customs Clearance',d:`Documentation review & duties assessment`,meta:`Estimated duties: ${fmt$(duties,s.currency)}`,done:progress>90},
+    {t:'Final Delivery',d:`Cargo delivered to consignee facility`,meta:`Freight cost: ${fmt$(freightCost,s.currency)}`,done:progress>=100}
+  ];
+
+  document.getElementById('track-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
+      <div style="background:var(--bg-2);padding:14px;border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:6px">Route</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text-0);line-height:1.6">
+          ${orig.flag} ${orig.name}<br>
+          <span style="color:var(--text-3);font-size:10px">↓ ${MODES.find(m=>m.code===s.mode).icon} ${lead}d transit</span><br>
+          ${dest.flag} ${dest.name}
+        </div>
+      </div>
+      <div style="background:var(--bg-2);padding:14px;border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:6px">Cargo Value</div>
+        <div class="mono" style="font-size:20px;font-weight:700;color:var(--gold)">${fmt$(s.value,s.currency)}</div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:2px">${s.teus} TEU · ${fmtN(s.weight,0)} kg</div>
+      </div>
+      <div style="background:var(--bg-2);padding:14px;border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:6px">Carbon Footprint</div>
+        <div class="mono" style="font-size:20px;font-weight:700;color:var(--purple)">${s.co2.toFixed(2)} t</div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:2px">CO₂e Scope 3 emissions</div>
+      </div>
+    </div>
+    <div style="background:var(--bg-2);padding:14px;border-radius:8px;border:1px solid var(--border);margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:11px">
+        <span class="mono">${s.originPort}</span>
+        <span style="color:var(--text-3)">Shipment Progress — ${progress}%</span>
+        <span class="mono">${s.destPort}</span>
+      </div>
+      <div style="height:8px;background:var(--bg-3);border-radius:4px;overflow:hidden;position:relative">
+        <div style="height:100%;width:${progress}%;background:linear-gradient(90deg,var(--accent),var(--success));position:relative">
+          <div style="position:absolute;right:0;top:-3px;width:14px;height:14px;border-radius:50%;background:var(--success);border:3px solid var(--bg-2);box-shadow:0 0 10px var(--success)"></div>
+        </div>
+      </div>
+    </div>
+    <h4 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-2);margin-bottom:14px">Event Timeline</h4>
+    <div class="timeline">
+      ${events.map(e=>`
+        <div class="tl-item ${e.done?'done':''} ${e.active?'active':''}">
+          <div class="t">${e.t}</div>
+          <div class="d">${e.d}</div>
+          <div class="meta">${e.meta}</div>
+        </div>
+      `).join('')}
+    </div>
+    ${s.notes ? `<div style="margin-top:20px;padding:12px;background:var(--bg-2);border-radius:8px;border:1px solid var(--border);font-size:11px"><strong style="color:var(--text-2)">Remarks:</strong> ${s.notes}</div>` : ''}
+  `;
+  document.getElementById('track-modal').classList.add('active');
+}
+
+function closeTracking(){
+  document.getElementById('track-modal').classList.remove('active');
+}
+
+// =================================================================
+// ============ EXPORT =============================================
+// =================================================================
+
+function exportCSV(){
+  const headers = ['ID','Product','HS Code','Qty','Origin','Origin Port','Destination','Dest Port','Mode','Carrier','Container','TEUs','Value','Currency','Weight','Incoterm','ETD','ETA','Status','Risk','CO2'];
+  const rows = shipments.map(s=>[
+    s.id,s.product,s.hscode,s.qty,s.origin,s.originPort,s.dest,s.destPort,s.mode,s.carrier,s.container,s.teus,s.value,s.currency,s.weight,s.incoterm,s.etd,s.eta,s.status,s.risk,s.co2.toFixed(2)
+  ]);
+  const csv = [headers, ...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const blob = new Blob([csv],{type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `globalchain-shipments-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// =================================================================
+// ============ CHATBOT ============================================
+// =================================================================
+
+function toggleChat(){
+  const panel = document.getElementById('chat-panel');
+  panel.classList.toggle('active');
+  document.getElementById('chat-badge').style.display = 'none';
+}
+
+function loadChatConfig(){
+  const raw = localStorage.getItem(CHAT_CONFIG_KEY);
+  if(raw){
+    try{
+      chatConfig = JSON.parse(raw);
+      showChatInterface();
+    }catch(e){}
+  }
+}
+
+function saveChatConfig(){
+  const apiKey = document.getElementById('nvidia-api-key').value.trim();
+  const model = document.getElementById('nvidia-model').value;
+  
+  if(!apiKey){
+    alert('Please enter your NVIDIA API key');
+    return;
+  }
+  
+  chatConfig = {apiKey, model};
+  localStorage.setItem(CHAT_CONFIG_KEY, JSON.stringify(chatConfig));
+  showChatInterface();
+}
+
+function showChatInterface(){
+  document.getElementById('chat-setup').style.display = 'none';
+  document.getElementById('chat-input-area').style.display = 'block';
+  
+  // Load chat history
+  const historyRaw = localStorage.getItem(CHAT_HISTORY_KEY);
+  if(historyRaw){
+    try{
+      chatHistory = JSON.parse(historyRaw);
+      chatHistory.forEach(msg => addMessageToChat(msg.role, msg.content, false));
+    }catch(e){}
+  }
+  
+  if(chatHistory.length === 0){
+    addMessageToChat('assistant', 'Olá! Sou seu assistente de Supply Chain. Posso ajudá-lo com informações sobre embarques, rotas, transportadoras, métricas de desempenho e muito mais. O que você gostaria de saber?', false);
+  }
+  
+  // Scroll to bottom
+  const chatBody = document.getElementById('chat-body');
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function addMessageToChat(role, content, saveToHistory = true){
+  const chatBody = document.getElementById('chat-body');
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `chat-msg ${role}`;
+  
+  const avatarSvg = role === 'user'
+    ? '<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>';
+  
+  msgDiv.innerHTML = `
+    <div class="chat-msg-avatar">${avatarSvg}</div>
+    <div class="chat-msg-bubble">${formatMessage(content)}</div>
+  `;
+  
+  chatBody.appendChild(msgDiv);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  
+  if(saveToHistory){
+    chatHistory.push({role, content});
+    localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory));
+  }
+}
+
+function formatMessage(text){
+  // Basic markdown-like formatting
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+function getSystemContext(){
+  const activeShipments = shipments.filter(s => s.status === 'transit' || s.status === 'customs').length;
+  const delayedShipments = shipments.filter(s => s.status === 'delayed').length;
+  const totalTEU = shipments.reduce((sum, s) => sum + s.teus, 0);
+  const
